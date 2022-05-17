@@ -1,114 +1,93 @@
 #include <iostream>
-#include <string>
-#include <stdlib.h>
-#include <time.h>
 
-#include "Fighter.h"
+
+#include "Student.h"
+#include "Instructor.h"
+#include "Admin.h"
+
 
 using std::cin;
 using std::cout;
 using std::endl;
-using std::string;
+
 
 int main() {
-	
-	Fighter* ptr_fighter = new Fighter("Josh", 100, 100);
-	cout << ptr_fighter->showName() << endl;
+	//Creating a student
+	Student* ptr_student = new Student("Dom", "Ioime", "W00397674");
 
-	Fighter player1;
-	player1.setName("Dom");
-	//player1.setHealth(100);
-	//player1.setPower(100);
-	cout << "Name: " << player1.showName() << endl;
-	cout << "Health: " << player1.showHealth() << endl;
-	cout << "Power: " << player1.showPower() << endl;
+	//Testing Methods
+	cout << ptr_student->show_first_name() << endl;
+	cout << ptr_student->show_last_name() << endl;
+	cout << ptr_student->show_id() << endl;
+	ptr_student->add_course();
+	ptr_student->drop_course();
+	ptr_student->print_schedule();
+	ptr_student->search_course();
 
-	Fighter player2;
-	player2.setName("Dom Jr");
-	//player2.setHealth(100);
-	//player2.setPower(100);
-	cout << "Name: " << player2.showName() << endl;
-	cout << "Health: " << player2.showHealth() << endl;
-	cout << "Power: " << player2.showPower() << endl;
+	//Changing Name and ID
+	ptr_student->set_first_name("Mod");
+	ptr_student->set_last_name("Emioi");
+	ptr_student->set_id("47679300W");
 
-	srand(time(NULL));
+	//Checking for change
+	cout << ptr_student->show_first_name() << endl;
+	cout << ptr_student->show_last_name() << endl;
+	cout << ptr_student->show_id() << endl;
 
-	cout << "--------THE BRAWL STARTS---------" << endl;
+	//Destruction
+	ptr_student->~Student();
 
+	//Creating Instructor
+	Instructor* ptr_instructor = new Instructor("Ahmed", "Hassebo", "W00111111");
 
-	player1.kick(player2);
+	//Testing Methods
+	cout << ptr_instructor->show_first_name() << endl;
+	cout << ptr_instructor->show_last_name() << endl;
+	cout << ptr_instructor->show_id() << endl;
+	ptr_instructor->print_classlist();
+	ptr_instructor->print_schedule();
+	ptr_instructor->search_course();
 
-	cout << "Name: " << player1.showName() << endl;
-	cout << "Health: " << player1.showHealth() << endl;
-	cout << "Power: " << player1.showPower() << endl;
-	cout << "Name: " << player2.showName() << endl;
-	cout << "Health: " << player2.showHealth() << endl;
-	cout << "Power: " << player2.showPower() << endl;
+	//Changing Name and ID
+	ptr_instructor->set_first_name("Demha");
+	ptr_instructor->set_last_name("Obessah");
+	ptr_instructor->set_id("11111100W");
 
-	//cout << "Enter your name: ";
-//string user_name;5
-//cin >> user_name;
+	//Checking for change
+	cout << ptr_instructor->show_first_name() << endl;
+	cout << ptr_instructor->show_last_name() << endl;
+	cout << ptr_instructor->show_id() << endl;
 
-//Fighter test(user_name, 90, 40);
-//cout << "Name: " << test.showName() << endl;
-//cout << "Health: " << test.showHealth() << endl;
-//cout << "Power: " << test.showPower() << endl;
+	//Destruction
+	ptr_instructor->~Instructor();
 
-////delete object:
-//test.~Fighter();
+	//Creating Admin
+	Admin* ptr_admin = new Admin("Mark", "Thompson", "W00999999");
 
-//cout << "Name: " << test.showName() << endl;
-//cout << "Health: " << test.showHealth() << endl;
-//cout << "Power: " << test.showPower() << endl;
+	//Testing Methods
+	cout << ptr_admin->show_first_name() << endl;
+	cout << ptr_admin->show_last_name() << endl;
+	cout << ptr_admin->show_id() << endl;
+	ptr_admin->add_course();
+	ptr_admin->add_student_to_course();
+	ptr_admin->add_user();
+	ptr_admin->print_course();
+	ptr_admin->print_roster();
+	ptr_admin->remove_course();
+	ptr_admin->remove_student_from_course();
+	ptr_admin->remove_user();
+	ptr_admin->search_course();
+	ptr_admin->search_roster();
 
-	
-	//while ((player1.showHealth() > 0) && (player2.showHealth() > 0)) {
-	//	//player 1 turn
-	//	cout << "Enter your move: 1 - punch, 2 - guard" << endl;
-	//	int choice;
-	//	cin >> choice;
+	//Changing Name and ID
+	ptr_admin->set_first_name("KarM");
+	ptr_admin->set_last_name("Nospmoht");
+	ptr_admin->set_id("99999900W");
 
-	//	//player 2 turn
-	//	int rand_num = (rand() % 2) + 1;
-
-	//	//outcomes
-	//	if (choice == 1 && rand_num == 1) {
-	//		player1.punch();
-	//		player2.damage();
-	//		player2.punch();
-	//		player1.damage();
-	//	}
-	//	else if (choice == 1 && rand_num == 2){
-	//		player1.punch();
-	//		player2.block();
-	//	}
-	//	else if (choice == 2 && rand_num == 1) {
-	//		player1.block();
-	//		player2.punch();
-	//	}
-	//	else if (choice == 2 && rand_num == 2) {
-	//		player1.block();
-	//		player2.block();
-	//	}
-	//	cout << "Name: " << player1.showName() << endl;
-	//	cout << "Health: " << player1.showHealth() << endl;
-	//	cout << "Power: " << player1.showPower() << endl;
-
-	//	cout << "Name: " << player2.showName() << endl;
-	//	cout << "Health: " << player2.showHealth() << endl;
-	//	cout << "Power: " << player2.showPower() << endl;
-	//}
-
-	//Display winner/loser
-	/*if (player1.showHealth() > 0) {
-		cout << player1.showName() << " won!" << endl;
-	}
-	else if (player2.showHealth() > 0) {
-		cout << player2.showName() << " won!" << endl;
-	}
-	else {
-		cout << "Draw!" << endl;
-	}*/
+	//Checking for change
+	cout << ptr_admin->show_first_name() << endl;
+	cout << ptr_admin->show_last_name() << endl;
+	cout << ptr_admin->show_id() << endl;
 
 	return 0;
 }
