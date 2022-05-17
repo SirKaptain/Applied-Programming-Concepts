@@ -3,9 +3,9 @@
 
 	//constructor (initial value)
 	User::User(){
-		first_name = "User First";
-		last_name = "User Last";
-		id = "000000";
+		first_name = "First Name";
+		last_name = "Last Name";
+		id = "W00000000";
 	}
 	//Constructor (inputed values)
 	User::User(string first_name, string last_name, string id){

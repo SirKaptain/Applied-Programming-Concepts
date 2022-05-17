@@ -3,9 +3,7 @@
 
 	//constructor (initial value)
 	Instructor::Instructor() : User(){
-        first_name = "Instructor First";
-		last_name = "Instructor Last";
-		id = "222222";
+        
     }
 	//Constructor (inputed values)
 	Instructor::Instructor(string first_name, string last_name, string id) : User(first_name, last_name, id){

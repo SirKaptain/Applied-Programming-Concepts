@@ -3,9 +3,7 @@
 
 	//constructor (initial value)
 	Student::Student() : User(){
-        first_name = "Student First";
-        last_name = "Student Last";
-        id = "111111";
+        
     }
 	//Constructor (inputed values)
 	Student::Student(string first_name, string last_name, string id) : User(first_name, last_name, id){

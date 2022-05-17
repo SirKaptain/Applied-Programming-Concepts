@@ -3,9 +3,7 @@
 
 	//constructor (initial value)
 	Admin::Admin() : User(){
-        first_name = "Admin First";
-        last_name = "Admin Last";
-        id = "333333";
+        
     }
 	//Constructor (inputed values)
 	Admin::Admin(string first_name, string last_name, string id) : User(first_name, last_name, id){
