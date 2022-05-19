@@ -1,4 +1,4 @@
-#include "Instructor.h"
+#include "Instructor.hpp"
 
 
 	//constructor (initial value)
