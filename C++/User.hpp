@@ -22,11 +22,12 @@ public:
 	~User();
 
 	void set_first_name(string new_first_name);
-	string show_first_name();
 	
 	void set_last_name(string new_last_name);
-	string show_last_name();
 
 	void set_id(string new_id);
-	string show_id();
+
+	void show_info();
+
+	void edit_info();
 };

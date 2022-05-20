@@ -1,38 +1,30 @@
 #include <iostream>
 
+using namespace std;
 
 #include "Student.hpp"
 #include "Instructor.hpp"
 #include "Admin.hpp"
 
-
-using std::cin;
-using std::cout;
-using std::endl;
-
-
 int main() {
-	int user_input;
+	int user_input = 1;
 	cout << "Welcome to Leopard Web!" << endl;
-	do{
+	while(user_input != 0){
 		cout << "Choose an option:" << endl;
-		cout << "Student(1)" << endl;
-		cout << "Instructor(2)" << endl;
-		cout << "Admin(3)" << endl;
-		cout << "Exit(0)" << endl;
-		cout << "Input:";
+		cout << "Student(1)		Instructor(2)" << endl;
+		cout << "Admin(3)		Exit(0)" << endl;
+		cout << "Input: ";
 		cin >> user_input;
 
 		if (user_input == 1){
 			Student* ptr_student = new Student("Dom", "Ioime", "W00397674");
-			do{
+			while (user_input != 0){
 				cout << "Choose an option:" << endl;
-				cout << "Add Course(1)" << endl;
-				cout << "Drop Course(2)" << endl;
-				cout << "Print Schedule(3)" << endl;
-				cout << "Search Course(4)" << endl;
+				cout << "Add Course(1)			Drop Course(2)" << endl;
+				cout << "Print Schedule(3)		Search Course(4)" << endl;
+				cout << "Show Info(5)			Edit Info(6)" << endl;
 				cout << "Exit(0)" << endl;
-				cout << "Input:";
+				cout << "Input: ";
 				cin >> user_input;
 				if (user_input == 1){
 					ptr_student->add_course();
@@ -46,24 +38,29 @@ int main() {
 				else if (user_input == 4){
 					ptr_student->search_course();
 				}
+				else if (user_input == 5){
+					ptr_student->show_info();
+				}
+				else if (user_input == 6){
+					ptr_student->edit_info();
+				}
 				else if (user_input == 0){
 					continue;
 				}
 				else{
 					cout << "Invalid Option!";
 				}
-			} while (user_input != 0);
+			}
 			ptr_student->~Student();
 		}
 		else if (user_input == 2){
 			Instructor* ptr_instructor = new Instructor("Ahmed", "Hassebo", "W00111111");
-			do{
+			while (user_input != 0){
 				cout << "Choose an option:" << endl;
-				cout << "Print Schedule(1)" << endl;
-				cout << "Print Classlist(2)" << endl;
-				cout << "Search Course(3)" << endl;
-				cout << "Exit(0)" << endl;
-				cout << "Input:";
+				cout << "Print Schedule(1)		Print Classlist(2)" << endl;
+				cout << "Search Course(3)		Show Info(4)" << endl;
+				cout << "Edit Info(5)			Exit(0)" << endl;
+				cout << "Input: ";
 				cin >> user_input;
 				if (user_input == 1){
 					ptr_instructor->print_schedule();
@@ -74,31 +71,30 @@ int main() {
 				else if (user_input == 3){
 					ptr_instructor->search_course();
 				}
+				else if (user_input == 4){
+					ptr_instructor->show_info();
+				}
+				else if (user_input == 5){
+					ptr_instructor->edit_info();
+				}
 				else if (user_input == 0){
 					continue;
 				}
 				else{
 					cout << "Invalid Option!";
 				}
-			}while (user_input != 0);
+			}
 			ptr_instructor->~Instructor();
 		}
 		else if (user_input == 3){
 			Admin* ptr_admin = new Admin("Mark", "Thompson", "W00999999");
-			do{
+			while (user_input != 0){
 				cout << "Choose an option:" << endl;
-				cout << "Add Course(1)" << endl;
-				cout << "Remove Course(2)" << endl;
-				cout << "Add User(3)" << endl;
-				cout << "Remove User(4)" << endl;
-				cout << "Add a Student to a Course(5)" << endl;
-				cout << "Remove a Student from a Course(6)" << endl;
-				cout << "Search Roster(7)" << endl;
-				cout << "Print Roster(8)" << endl;
-				cout << "Search Course(9)" << endl;
-				cout << "Print Course(10)" << endl;
-				cout << "Exit(0)" << endl;
-				cout << "Input:";
+				cout << "Add Course(1)	Remove Course(2)	Add User(3)	Remove User(4)" << endl;
+				cout << "Add a Student to a Course(5)	Remove a Student from a Course(6)" << endl;
+				cout << "Search Roster(7)	Print Roster(8)		Search Course(9)	Print Course(10)" << endl;
+				cout << "Show Info(11)	Edit Info(12)	Exit(0)" << endl;
+				cout << "Input: ";
 				cin >> user_input;
 				if (user_input == 1){
 					ptr_admin->add_course();
@@ -130,24 +126,30 @@ int main() {
 				else if (user_input == 10){
 					ptr_admin->print_course();
 				}
+				else if (user_input == 11){
+					ptr_admin->show_info();
+				}
+				else if (user_input == 12){
+					ptr_admin->edit_info();
+				}
 				else if (user_input == 0){
 					continue;
 				}
 				else{
 					cout << "Invalid Option!";
 				}
-			}while (user_input != 0);
+			}
 			ptr_admin->~Admin();
 		}
 		else if (user_input == 0){
 			cout << "Have a nice day!";
-			break;
+			continue;
 		}
 		else {
 			cout << "Invalid Option!" << endl;
 		}
 
-	}while(user_input != 0);
+	}
 	
 	return 0;
 }
