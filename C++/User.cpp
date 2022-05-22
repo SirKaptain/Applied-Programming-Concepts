@@ -67,7 +67,7 @@
 				break;
 			}
             else{
-				cout << "Invalid Option" << endl;
+				cout << "Invalid Option!" << endl;
 			}
 		}
 	}
