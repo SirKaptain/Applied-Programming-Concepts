@@ -1,0 +1,4 @@
+The first iteration of the program is what we did for assignment 1. 
+For the following iteration there should be work done on the databases and once those are fleshed out, 
+the next iteration should be done on each method of each class. 
+Then one final iteration is combining all of the previous work into a complete application.

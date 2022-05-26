@@ -1,0 +1,10 @@
+GUI:
+https://stackoverflow.com/questions/1186017/how-do-i-build-a-graphical-user-interface-in-c
+https://www.tutorialspoint.com/python/python_gui_programming.htm
+https://csveda.com/best-java-gui-frameworks/
+https://www3.ntu.edu.sg/home/ehchua/programming/java/j4a_gui.html
+
+Database:
+https://www.codeguru.com/database/database-programming-with-c-c/
+https://www.w3schools.com/python/python_mysql_create_db.asp
+https://www.tutorialspoint.com/jdbc/jdbc-create-database.htm
