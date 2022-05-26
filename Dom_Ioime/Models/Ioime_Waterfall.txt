@@ -1,0 +1,33 @@
+
+Requirements Definition:
+
+Design a scheduling system for a university similar to Leopard Web. The system will allow students, faculty, and an admin (such as the registrar) to add courses, search for courses, print schedules, etc.
+Here is a list of the requirements for scheduling system:
+        Database of users: the system should work for 100 students, 10 instructors, and 1 admin.
+        Database of courses: this will contain information such as the CRN, course name, times, and instructor.
+        Three types of users:
+            student – can register, can see available courses and their own schedule.
+            instructor – can see available courses and their own course roster.
+            admin – can see everything, can edit courses/users/schedules.
+        The system should include multiple semesters, print-out of schedule, scheduling preferences.
+
+System and software design:
+
+There will be two different databases; one will contain information about courses such as times, location, course description, 
+professors, etc. and the other will be a database containing users with their respective information saved such as schedules, class lists, 
+user information, etc. There will have to be a main program to bridge these databases together and provide a UI for the users.
+
+Implementation and unit testing:
+
+This is where we will write the code. For unit testing, we should first write the databases and test them, then the code for the 
+main program should be written following the protocols to communicate with the databases. 
+This main program should be tested without physically talking with the databases yet.
+
+Integration and system testing:
+
+This is where we combine the databases and the main program into one system. 
+The program should be put under extensive testing with the idea of trying to break the system, then produce a product that doesn’t break.
+
+Operation and maintenance:
+
+This is the stage where we are able to receive feedback from users and where we should update our program according to the feedback.
