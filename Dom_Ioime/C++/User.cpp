@@ -42,6 +42,7 @@
 			cout << "ID(3)           Back(0)" << endl;
 			cout << "Input: ";
 			cin >> user_input;
+			cout << "\n";
 
 			if (user_input == 1){
 				cout << "What would you like to change your first name to?" << endl;
@@ -69,6 +70,7 @@
             else{
 				cout << "Invalid Option!" << endl;
 			}
+			cout << "\n";
 		}
 	}
 

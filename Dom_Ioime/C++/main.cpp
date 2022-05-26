@@ -15,6 +15,7 @@ int main() {
 		cout << "Admin(3)		Exit(0)" << endl;
 		cout << "Input: ";
 		cin >> user_input;
+		cout << "\n";
 
 		if (user_input == 1){
 			Student* ptr_student = new Student("Dom", "Ioime", "W00397674");
@@ -26,6 +27,7 @@ int main() {
 				cout << "Exit(0)" << endl;
 				cout << "Input: ";
 				cin >> user_input;
+				cout << "\n";
 				if (user_input == 1){
 					ptr_student->add_course();
 				}
@@ -50,6 +52,7 @@ int main() {
 				else{
 					cout << "Invalid Option!";
 				}
+				cout << "\n";
 			}
 			ptr_student->~Student();
 		}
@@ -62,6 +65,7 @@ int main() {
 				cout << "Edit Info(5)			Exit(0)" << endl;
 				cout << "Input: ";
 				cin >> user_input;
+				cout << "\n";
 				if (user_input == 1){
 					ptr_instructor->print_schedule();
 				}
@@ -83,6 +87,7 @@ int main() {
 				else{
 					cout << "Invalid Option!";
 				}
+				cout << "\n";
 			}
 			ptr_instructor->~Instructor();
 		}
@@ -96,6 +101,7 @@ int main() {
 				cout << "Show Info(11)	Edit Info(12)	Exit(0)" << endl;
 				cout << "Input: ";
 				cin >> user_input;
+				cout << "\n";
 				if (user_input == 1){
 					ptr_admin->add_course();
 				}
@@ -138,6 +144,7 @@ int main() {
 				else{
 					cout << "Invalid Option!";
 				}
+				cout << "\n";
 			}
 			ptr_admin->~Admin();
 		}
@@ -148,7 +155,6 @@ int main() {
 		else {
 			cout << "Invalid Option!" << endl;
 		}
-
 	}
 	
 	return 0;
