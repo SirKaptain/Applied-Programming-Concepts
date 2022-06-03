@@ -1,0 +1,15 @@
+Incremental Model:
+Iteration 1:
+	-The first iteration included the login system, as well as a barebones implementation of the user class and its three derived classes
+	-A temporary built-in list of usernames and passwords was added for testing purposes
+	-The class functions simply print an acknowledgement that they were called, but don't actually do anything, and cannot do anything until the databases are implemented.
+Iteration 2:
+	-The second iteration will include the user information database
+	-The temporary testing usernames and passwords will be removed, and the login code will be altered slightly to utilize the new database
+	-Some class functions will be available: ID's, names, and some other information will allow the various call object functions to be fleshed out
+Iteration 3:
+	-The third iteration will include the course information database
+	-This will allow the remainder of the class functions to be fully fleshed out and utilized and the system as a whole will be just about complete
+Iteration 4+:
+	-All future iterations will involve more granular improvements and changes
+	

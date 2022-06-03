@@ -1,0 +1,29 @@
+Requirements Definition:
+	The requirements for this program are as follows:
+	-The program must include a database of users including at least 100 students, 10 instructors, and 1 admin
+		-The students must be able to register for courses, search available courses, and view their own schedules
+		-The instructors must be able to see available courses and their own course rosters
+		-The admin must be able to see everything the students and instructors can, as well as edit courses, users, and schedules
+	-The program must include a database of courses with information such as CRN, course name, time, and instructor
+	-The program must include multiple semesters, print-out schedules, and include scheduling preferences
+	-The program must be tested thoroughly
+	
+System software and design:
+	The base class of the system is user
+		-Its attributes are first name, last name, and ID
+		-Its methods are a set function for each attribute, and a function to print all info for the object
+	There will be three derived classes
+		-All derived classes must contain any additional attributes and appropriate set/get functions
+		-First, the student class will have functions that allow them to search courses, add/drop courses, and view their schedule
+		-Second, the instructor class will have functions that allow them to view their schedule, view their class lists, and search for courses
+		-Third, the admin class will have functions that allow them to add courses to the system, remove courses from the system, add/remove users, add/remove students from a course, as well as search and view course rosters and courses
+
+Implementation and unit testing:
+	At this stage, the code for the main system will be written and tested without implementing the databases, this means the code will just allow for logging in to the system and accessing the various tools that will be implemented with the databases.
+	Then the database code will be written with the various functions attached to them, and those will be tested as well.
+	
+Integration and system testing:
+	Once both the main code and the database code are tested and functional, the two will be attatched and implemented into one system, then tested so they properly work together.
+	
+Operation and maintenance:
+	After everything has been implemented, the system will be installed for use by the customer and the system will be stress tested for bugs and other issues to be ironed out with future updates.
