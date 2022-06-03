@@ -2,3 +2,9 @@ The first iteration of the program is what we did for assignment 1.
 For the following iteration there should be work done on the databases and once those are fleshed out, 
 the next iteration should be done on each method of each class. 
 Then one final iteration is combining all of the previous work into a complete application.
+
+///
+Zoltan comments - The first suggestion I would make is to have a more detailed structure include what specific tasks you would like to complete.
+These may include the details about assignment 1 such as the list of requirements. You should also include some of the concurrent activities.
+Also talk about the work expected to be done with databases and how SQL is incorporated. An important thing I think you should include
+is how you plan on adding the courses.

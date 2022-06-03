@@ -8,3 +8,9 @@ Database:
 https://www.codeguru.com/database/database-programming-with-c-c/
 https://www.w3schools.com/python/python_mysql_create_db.asp
 https://www.tutorialspoint.com/jdbc/jdbc-create-database.htm
+
+
+///
+Zoltan comments - Good start to collecting resources. Add how you have/will use(d) these resources for easier
+incorporation or citation of them down the road. Also place some specifications at the begging and how those
+may change due to the addition of these databases/GUIs.
