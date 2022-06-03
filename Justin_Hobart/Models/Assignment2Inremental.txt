@@ -13,3 +13,6 @@ Iteration 3:
 Iteration 4+:
 	-All future iterations will involve more granular improvements and changes
 	
+///
+Zoltan comments - This model is well-structured and adds a lot of good details. I would add a few more details such as the database must include
+100 students etc. A few details about the concurrent activities like how validation would be done would also help.
