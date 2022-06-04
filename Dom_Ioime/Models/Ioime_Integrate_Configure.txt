@@ -14,3 +14,6 @@ https://www.tutorialspoint.com/jdbc/jdbc-create-database.htm
 Zoltan comments - Good start to collecting resources. Add how you have/will use(d) these resources for easier
 incorporation or citation of them down the road. Also place some specifications at the begging and how those
 may change due to the addition of these databases/GUIs.
+
+///
+Justin comments - I would recommend adding some descriptions to each link so you don't have to go through each one to find what you're looking for.
