@@ -36,3 +36,6 @@ This is the stage where we are able to receive feedback from users and where we 
 Zoltan comments - This is a great model, well written with lots of details and makes sense to use in the future. 
 The only place I would add more detail is in integration and testing where I believe you could say how one 
 would test the system, such as calling each function for every kind of user in the database.
+
+///
+Justin comments - Model looks good, maybe a bit more detail for the last two steps
