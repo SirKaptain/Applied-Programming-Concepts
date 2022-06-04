@@ -2,6 +2,19 @@ import sqlite3
 import os
 from sqlite3 import Error
 
+STUDENT = "STUDENT"
+INSTRUCTOR = "INSTRUCTOR"
+ADMIN = "ADMIN"
+ID = "ID"
+NAME = "NAME"
+SURNAME = "SURNAME"
+GRADYEAR = "GRADYEAR"
+MAJOR = "MAJOR"
+EMAIL = "EMAIL"
+TITLE = "TITLE"
+HIREYEAR = "HIREYEAR"
+DEPT = "DEPT"
+OFFICE = "OFFICE"
 
 def create_connection(db_file):
     conn = None
@@ -22,30 +35,33 @@ def create_courses_table(conn):
     cur.execute("CREATE TABLE COURSES(CRN text, TITLE text, DEPARTMENT text, TIME text, DAYS_OF_WEEK text, SEMESTER text, YEAR int, CREDITS int)")
 
 
-def print_students(conn):
+def print_table(conn, table):
     cur = conn.cursor()
-    cur.execute("SELECT * FROM STUDENT")
+    cur.execute("SELECT * FROM " + table)
     print(cur.fetchall())
 
-def print_instructors(conn):
+def search_table(conn, table, attribute, value):
     cur = conn.cursor()
-    cur.execute("SELECT * FROM INSTRUCTOR")
-    print(cur.fetchall())
+    cur.execute("SELECT * FROM " + table + " WHERE " + attribute + " = ?", (value,))
+    data = cur.fetchall()
+    return data
 
-def print_admins(conn):
+def insert_values(conn, table, attribute, value):
     cur = conn.cursor()
-    cur.execute("SELECT * FROM ADMIN")
-    print(cur.fetchall())
+    print("INSERT INTO " + table + " " + attribute + " VALUES (%s, %s, %s, %s, %s, %s)", value)
+    cur.execute("INSERT INTO " + table + " " + attribute + " VALUES (?,?,?,?,?,?)", value)
+
 
 def main():
 
     # create a database connection
-    print(os.getcwd())
     conn = create_connection('./Dom_Ioime/Code/Python/assignment3.db')
-    create_courses_table(conn)
-    print_students(conn)
-    print_instructors(conn)
-    print_admins(conn)
+    #create_courses_table(conn)
+    print_table(conn, "STUDENT")
+    print(search_table(conn, STUDENT, NAME, "Thomas"))
+    attributes = (ID, NAME, SURNAME, GRADYEAR, MAJOR, EMAIL)
+    str = ''.join(attributes)
+    insert_values(conn, STUDENT, str, "(WOO397674, Dom, Ioime, 2023, BSCO, ioimed)")
     conn.commit()
     conn.close()
 

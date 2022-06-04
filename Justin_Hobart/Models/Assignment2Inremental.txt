@@ -16,3 +16,6 @@ Iteration 4+:
 ///
 Zoltan comments - This model is well-structured and adds a lot of good details. I would add a few more details such as the database must include
 100 students etc. A few details about the concurrent activities like how validation would be done would also help.
+
+Dom comments - I like how you thought of making a login system. I was thinking of just making a ui, but in the real world, that is not how 
+these kind of systems work. This is probably an idea I would add to the final project.

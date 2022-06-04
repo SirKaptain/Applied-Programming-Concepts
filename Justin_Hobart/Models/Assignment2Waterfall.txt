@@ -31,3 +31,6 @@ Operation and maintenance:
 ///
 Zoltan comments - This model seems like the best option out of your three, although you could flesh out the final three sections more (mainly Integration/testing). Just adding a few more details on how you will do what you described
 will add a lot to the model.
+
+Dom comments - I think the setup for the system software/design is perfect. I am curious as to what your thinking about for the main programs
+architecture. 
