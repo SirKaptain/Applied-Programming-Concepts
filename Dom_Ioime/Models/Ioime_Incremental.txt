@@ -8,3 +8,6 @@ Zoltan comments - The first suggestion I would make is to have a more detailed s
 These may include the details about assignment 1 such as the list of requirements. You should also include some of the concurrent activities.
 Also talk about the work expected to be done with databases and how SQL is incorporated. An important thing I think you should include
 is how you plan on adding the courses.
+
+///
+Justin comments - My suggestion is to add more detail to each iteration.  What exactly was done for assignment 1, what work will be done on the databases, what exactly will be done to each classes method?  That sort of thing.
