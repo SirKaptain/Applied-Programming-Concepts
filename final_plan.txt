@@ -33,11 +33,13 @@ Iteration 1:
                 Search/Print Roster
                 Search/Print Courses
         -Create all methods, however no need to implement function, only print acknologements that it works
+        -Create a main test bench file for testing class method calls (this will be changed every iteration to incorperate additional features)
 
 Iteration 2:
     Create functions for database handeling
         -Make general functions that work for ALL User methods
         -Will need to be tested before implementing into main program
+        -incorperate functions into main program
 
 Iteration 3:
     Create database(s)
@@ -53,8 +55,9 @@ Iteration 4:
     Create login system for a user.
         - System should prompt user for login credentials
         - Once logged in, enter the main program
+        -incorperate into main program
 
 Iteration 5:
-    Create a main program
+    Finalize the main program
         -Includes GUI and general "flow" of the program
     (added this at end because since all functionallity has been added before, developer knows exactly how everything fits together)
