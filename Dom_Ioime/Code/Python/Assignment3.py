@@ -203,17 +203,11 @@ def main():
     find_matching_instructors(conn)
 
     #ending for db modification
-    #conn.commit()
+    conn.commit()
     conn.close()
 
 if __name__ == '__main__':
     main()
-
-
-
-
-
-
 
 ##for inserting courses using menu option
     # response = []
@@ -221,4 +215,4 @@ if __name__ == '__main__':
     #     answer = input(i + "?: ")
     #     response.append(answer)
     #
-    #tuple(response) <-- goes into query
+    #insert_row(conn, COURSES, tuple(courses_attributes), tuple(response))
