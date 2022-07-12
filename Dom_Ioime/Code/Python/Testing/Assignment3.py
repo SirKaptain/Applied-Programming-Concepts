@@ -122,7 +122,7 @@ def find_matching_instructors(conn):
 
 def main():
     # # create a database connection
-    conn = create_connection('./Dom_Ioime/Code/Python/assignment3.db') 
+    conn = create_connection('./Dom_Ioime/Code/Python/Testing/assignment3.db') 
 
     # #show current student table
     print_table(conn, STUDENT)
