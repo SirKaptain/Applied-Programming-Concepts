@@ -102,3 +102,11 @@ def find_matching_instructors(conn):
     cur.execute("SELECT INSTRUCTOR.NAME, INSTRUCTOR.SURNAME, COURSES.TITLE FROM INSTRUCTOR INNER JOIN COURSES ON INSTRUCTOR.DEPT = COURSES.DEPT")
     fetch = cur.fetchall()
     print(fetch)
+
+def make_relation(conn, id_1, id_2):
+    cur = conn.cursor()
+    try:
+        print("INSERT INTO SCHEDULE VALUES ({}, {})".format(id_1, id_2))
+        cur.execute("INSERT INTO SCHEDULE VALUES ({}, {})".format(id_1, id_2))
+    except Error as e:
+        print(e)
