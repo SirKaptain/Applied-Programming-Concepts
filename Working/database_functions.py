@@ -1,14 +1,7 @@
 import sqlite3
 from sqlite3 import Error
+import pandas as pd
 
-def create_connection(db_file):
-    conn = None
-    try:
-        conn = sqlite3.connect(db_file)
-    except Error as e:
-        print(e)
-
-    return conn
 
 def create_table(conn, table, attribute):
     cur = conn.cursor()
@@ -56,8 +49,8 @@ def insert_row(conn, table, attributes, values):
 def remove_row(conn, table, attribute, value):
     cur = conn.cursor()
     try:
-        print("DELETE FROM {} WHERE {} = {}".format(table, attribute, value))
-        cur.execute("DELETE FROM {} WHERE {} = {}".format(table, attribute, value))
+        print("DELETE FROM '{}' WHERE '{}' = '{}'".format(table, attribute, value))
+        cur.execute("DELETE FROM '{}' WHERE '{}' = '{}'".format(table, attribute, value))
     except Error as e:
         print(e)
 
@@ -103,10 +96,51 @@ def find_matching_instructors(conn):
     fetch = cur.fetchall()
     print(fetch)
 
-def make_relation(conn, id_1, id_2):
+def add_course_to_schedule(conn, student_id, course_crn):
     cur = conn.cursor()
     try:
-        print("INSERT INTO SCHEDULE VALUES ({}, {})".format(id_1, id_2))
-        cur.execute("INSERT INTO SCHEDULE VALUES ({}, {})".format(id_1, id_2))
+        print("INSERT INTO SCHEDULE('STUDENT_ID', 'COURSE_ID') VALUES ('{}', '{}')".format(student_id, course_crn))
+        cur.execute("INSERT INTO SCHEDULE('STUDENT_ID', 'COURSE_ID') VALUES ('{}', '{}')".format(student_id, course_crn))
     except Error as e:
         print(e)
+    
+def remove_course_from_schedule(conn, student_id, course_crn ):
+    cur = conn.cursor()
+    try:
+        print("DELETE FROM SCHEDULE WHERE STUDENT_ID = '{}' AND COURSE_ID = '{}'".format(student_id, course_crn))
+        cur.execute("DELETE FROM SCHEDULE WHERE STUDENT_ID = '{}' AND COURSE_ID = '{}'".format(student_id, course_crn))
+    except Error as e:
+        print(e)
+
+def print_student_schedule(conn, student_id):
+    cur = conn.cursor()
+    try:
+        print("SELECT COURSES FROM STUDENT, COURSES, SCHEDULE WHERE STUDENT.ID = SCHEDULE.STUDENT_ID AND COURSES.CRN = SCHEDULE.COURSE_ID AND ID = '{}'".format(student_id))
+        cur.execute("SELECT COURSES FROM STUDENT, COURSES, SCHEDULE WHERE STUDENT.ID = SCHEDULE.STUDENT_ID AND COURSES.CRN = SCHEDULE.COURSE_ID AND ID = '{}'".format(student_id))
+    except Error as e:
+        print(e)
+#def assemble_roster():
+
+#def add_course_to_system():
+
+#def remove_course_from_system():
+
+#def remove_course_from_schedule(conn, student_id, course_crn):
+
+#def remove_student():
+
+def populate_courses(conn):
+    #populating courses table from csv file
+    data = pd.read_csv ('./Working/courses_table.csv')   
+    df = pd.DataFrame(data)
+    cur = conn.cursor()
+    for row in df.itertuples():
+        cur.execute("INSERT INTO COURSES (CRN, TITLE, DEPT, TIME, DAYS_OF_WEEK, SEMESTER, YEAR, CREDITS) VALUES (?,?,?,?,?,?,?,?)",
+                row.CRN,
+                row.TITLE,
+                row.DEPT,
+                row.TIME,
+                row.DAYS_OF_WEEK,
+                row.SEMESTER,
+                row.YEAR,
+                row.CREDITS)
