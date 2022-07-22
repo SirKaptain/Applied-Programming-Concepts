@@ -64,7 +64,7 @@ for i in range(100):
 
     insert_row(conn, "LOGIN", tuple(login_attributes), "('{}','{}')".format(id, password))
 
-#defined then called to populate the courses table from a .csv file
+#populate the courses table from a .csv file
 def populate_courses(conn):
     #populating courses table from csv file
     data = pd.read_csv ('./Working/courses_table.csv')   
