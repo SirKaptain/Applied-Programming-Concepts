@@ -1,6 +1,6 @@
 import sqlite3
 from sqlite3 import Error
-import pandas as pd
+
 
 def create_connection(db_file):
     conn = None
@@ -137,29 +137,3 @@ def print_student_schedule(conn, student_id):
 
 #def remove_student():
 
-def populate_courses(conn):
-    #populating courses table from csv file
-    data = pd.read_csv ('./Working/courses_table.csv')   
-    df = pd.DataFrame(data)
-    cur = conn.cursor()
-    for row in df.itertuples():
-        print("INSERT INTO COURSES (CRN, TITLE, DEPT, TIME, DAYS_OF_WEEK, SEMESTER, YEAR, CREDITS) VALUES ({},{},{},{},{},{},{},{})".format(
-            row.CRN,
-            row.TITLE,
-            row.DEPT,
-            row.TIME,
-            row.DAYS_OF_WEEK,
-            row.SEMESTER,
-            row.YEAR,
-            row.CREDITS
-        ))
-        cur.execute("INSERT INTO COURSES (CRN, TITLE, DEPT, TIME, DAYS_OF_WEEK, SEMESTER, YEAR, CREDITS) VALUES ('{}','{}','{}','{}','{}','{}','{}','{}')".format(
-            row.CRN,
-            row.TITLE,
-            row.DEPT,
-            row.TIME,
-            row.DAYS_OF_WEEK,
-            row.SEMESTER,
-            row.YEAR,
-            row.CREDITS
-        ))

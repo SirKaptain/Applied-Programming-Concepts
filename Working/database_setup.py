@@ -1,6 +1,7 @@
 from database_functions import *
 import random
 import string
+import pandas as pd
 
 
 # create a database connection
@@ -49,10 +50,8 @@ courses_attributes = []
 for i in get_table_info(conn, "COURSES"):
     courses_attributes.append(i[1])
 
-
 #populates all tables with ID's and the login table with ID's and passwords
 #generates 100 random "W00 + 6 digit" id's and "4 character" passwords
-
 for i in range(100):
     id = ('W00' + '{:06}'.format(random.randrange(1, 10**6)))
     password = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(4))
@@ -64,7 +63,15 @@ for i in range(100):
         insert_row(conn, "ADMIN", "('{}')".format(admin_attributes[0]), "('{}')".format(id))
 
     insert_row(conn, "LOGIN", tuple(login_attributes), "('{}','{}')".format(id, password))
-    
+
+#defined then called to populate the courses table from a .csv file
+def populate_courses(conn):
+    #populating courses table from csv file
+    data = pd.read_csv ('./Working/courses_table.csv')   
+    df = pd.DataFrame(data)
+    cur = conn.cursor()
+    for row in df.itertuples():
+        cur.execute("INSERT INTO COURSES (CRN, TITLE, DEPT, TIME, DAYS_OF_WEEK, SEMESTER, YEAR, CREDITS) VALUES ('{}','{}','{}','{}','{}','{}','{}','{}')".format(row.CRN, row.TITLE, row.DEPT, row.TIME, row.DAYS_OF_WEEK, row.SEMESTER, row.YEAR, row.CREDITS))
 populate_courses(conn)
 
 #ending for db modification
