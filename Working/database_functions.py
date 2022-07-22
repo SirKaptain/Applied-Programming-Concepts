@@ -2,6 +2,14 @@ import sqlite3
 from sqlite3 import Error
 import pandas as pd
 
+def create_connection(db_file):
+    conn = None
+    try:
+        conn = sqlite3.connect(db_file)
+    except Error as e:
+        print(e)
+
+    return conn
 
 def create_table(conn, table, attribute):
     cur = conn.cursor()
@@ -135,12 +143,23 @@ def populate_courses(conn):
     df = pd.DataFrame(data)
     cur = conn.cursor()
     for row in df.itertuples():
-        cur.execute("INSERT INTO COURSES (CRN, TITLE, DEPT, TIME, DAYS_OF_WEEK, SEMESTER, YEAR, CREDITS) VALUES (?,?,?,?,?,?,?,?)",
-                row.CRN,
-                row.TITLE,
-                row.DEPT,
-                row.TIME,
-                row.DAYS_OF_WEEK,
-                row.SEMESTER,
-                row.YEAR,
-                row.CREDITS)
+        print("INSERT INTO COURSES (CRN, TITLE, DEPT, TIME, DAYS_OF_WEEK, SEMESTER, YEAR, CREDITS) VALUES ({},{},{},{},{},{},{},{})".format(
+            row.CRN,
+            row.TITLE,
+            row.DEPT,
+            row.TIME,
+            row.DAYS_OF_WEEK,
+            row.SEMESTER,
+            row.YEAR,
+            row.CREDITS
+        ))
+        cur.execute("INSERT INTO COURSES (CRN, TITLE, DEPT, TIME, DAYS_OF_WEEK, SEMESTER, YEAR, CREDITS) VALUES ('{}','{}','{}','{}','{}','{}','{}','{}')".format(
+            row.CRN,
+            row.TITLE,
+            row.DEPT,
+            row.TIME,
+            row.DAYS_OF_WEEK,
+            row.SEMESTER,
+            row.YEAR,
+            row.CREDITS
+        ))

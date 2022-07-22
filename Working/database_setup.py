@@ -2,8 +2,9 @@ from database_functions import *
 import random
 import string
 
+
 # create a database connection
-conn = sqlite3.connect('./Working/database.db')
+conn = create_connection('./Working/database.db') 
 
 #removing tables if already exists
 remove_table(conn, "LOGIN")
