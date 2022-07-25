@@ -194,5 +194,10 @@ def add_course_to_system(conn):
 
 #def remove_course_from_schedule(conn, student_id, course_crn):
 
-#def remove_student():
-
+def remove_student(conn, student_name):
+    cur = conn.cursor()
+    try:
+        print("DELETE FROM STUDENT WHERE NAME = '{}'".format(student_name))
+        cur.execute("DELETE FROM STUDENT WHERE NAME = '{}'".format(student_name))
+    except Error as e:
+        print(e)
