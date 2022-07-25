@@ -1,5 +1,6 @@
 import sqlite3
 from sqlite3 import Error
+from datetime import datetime
 
 
 def create_connection(db_file):
@@ -127,9 +128,67 @@ def print_student_schedule(conn, student_id):
         cur.execute("SELECT COURSES FROM STUDENT, COURSES, SCHEDULE WHERE STUDENT.ID = SCHEDULE.STUDENT_ID AND COURSES.CRN = SCHEDULE.COURSE_ID AND ID = '{}'".format(student_id))
     except Error as e:
         print(e)
+        
+#print all students in class
 #def assemble_roster():
 
-#def add_course_to_system():
+def add_course_to_system(conn):
+    #getting list of attributes in COURSES table
+    courses_attributes = []
+    for i in get_table_info(conn, "COURSES"):
+        courses_attributes.append(i[1])
+
+    #getting list of CRN #'s from COURSES table (make sure no duplicates when adding)
+    crn_list = []
+    cur = conn.cursor()
+    cur.execute("SELECT COURSES.CRN FROM COURSES")
+    fetch = cur.fetchall()
+    crn_list = [int(item) for t in fetch for item in t]
+
+    #prompting user for course information and error checking inputs
+    response = []
+    i = 0
+    while i < len(courses_attributes[0:9]):
+        answer = input(courses_attributes[i] + "?: ")
+        #crn
+        if (i == 0):
+            try: 
+                int(answer)
+            except ValueError:
+                print("Input is not an integer!")
+                continue
+            if ((len(answer) == 5) and (int(answer) not in crn_list)):
+                response.append(int(answer))
+            else:
+                print("Error Adding " + courses_attributes[i] + ". (Make sure not already a CRN and is 5 digits long)")
+                continue
+        #department
+        if (i == 2):
+            if((len(answer) == 4) and not(any([char.isdigit() for char in answer]))):
+                response.append(answer.upper())
+            else:
+                print("Error Adding " + courses_attributes[i] + ". (Make sure answer is 4 characters long).")
+                continue
+        #start/end time
+        if (i == 3 or i == 4):
+            format = '%I:%M %p'
+            try: 
+                time = datetime.strptime(answer, format)
+                response.append(time)
+            except ValueError:
+                print("Error Adding " + courses_attributes[i] + ". (Make sure in format hh:mm AM/PM)")
+                continue
+        #days of week
+        if(i == 5):
+            possible_days = ('M', 'T', 'W', 'TR', 'F')
+            if((answer.upper() in possible_days) or  ):
+
+        i += 1
+
+
+
+
+    insert_row(conn, "COURSES", tuple(courses_attributes[0:8]), tuple(response))
 
 #def remove_course_from_system():
 
