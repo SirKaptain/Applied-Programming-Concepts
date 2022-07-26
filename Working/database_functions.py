@@ -160,29 +160,50 @@ def add_course_to_system(conn):
             if ((len(answer) == 5) and (int(answer) not in crn_list)):
                 response.append(int(answer))
             else:
-                print("Error Adding " + courses_attributes[i] + ". (Make sure not already a CRN and is 5 digits long)")
+                print("Error Adding ", courses_attributes[i], ". (Make sure not already a CRN and is 5 digits long)")
+                continue
+        #title
+        if (i == 1):
+            if (len(answer) > 0):
+                response.append(answer.upper())
+            else:
+                print("Error Adding ", courses_attributes[i], ". (Make sure to enter a string)")
                 continue
         #department
         if (i == 2):
             if((len(answer) == 4) and not(any([char.isdigit() for char in answer]))):
                 response.append(answer.upper())
             else:
-                print("Error Adding " + courses_attributes[i] + ". (Make sure answer is 4 characters long).")
+                print("Error Adding ", courses_attributes[i], ". (Make sure answer is 4 characters long).")
                 continue
         #start/end time
         if (i == 3 or i == 4):
             format = '%I:%M %p'
             try: 
                 time = datetime.strptime(answer, format)
-                response.append(time)
+                response.append(time.strftime(format))
             except ValueError:
-                print("Error Adding " + courses_attributes[i] + ". (Make sure in format hh:mm AM/PM)")
+                print("Error Adding ", courses_attributes[i], ". (Make sure in format hh:mm AM/PM)")
                 continue
         #days of week
         if(i == 5):
+            flag = 0
+            days = []
             possible_days = ('M', 'T', 'W', 'TR', 'F')
-            if((answer.upper() in possible_days) or  ):
-
+            if (len(answer) > 0):
+                for j in answer.split():
+                    if (j.upper() in possible_days):
+                        days.append(j.upper())
+                    else:
+                        flag = 1
+                        break
+            else:
+                flag = 1
+            if (flag):
+                print("Error Adding", courses_attributes[i], ". (Make sure answer is M T W TR or F. For multiple days, seperate with a space")
+                continue
+            response.append(tuple(days))
+        print(response)
         i += 1
 
 
