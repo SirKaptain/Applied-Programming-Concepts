@@ -131,6 +131,7 @@ def print_student_schedule(conn, student_id):
         
 #print all students in class
 #def assemble_roster():
+    #assign class to instructor based off department
 
 def add_course_to_system(conn):
     #getting list of attributes in COURSES table
@@ -160,21 +161,21 @@ def add_course_to_system(conn):
             if ((len(answer) == 5) and (int(answer) not in crn_list)):
                 response.append(int(answer))
             else:
-                print("Error Adding ", courses_attributes[i], ". (Make sure not already a CRN and is 5 digits long)")
+                print("Error Adding " + courses_attributes[i] + ". (Make sure not already a CRN and is 5 digits long)")
                 continue
         #title
         if (i == 1):
             if (len(answer) > 0):
                 response.append(answer.upper())
             else:
-                print("Error Adding ", courses_attributes[i], ". (Make sure to enter a string)")
+                print("Error Adding " + courses_attributes[i] + ". (Make sure to enter a string)")
                 continue
         #department
         if (i == 2):
             if((len(answer) == 4) and not(any([char.isdigit() for char in answer]))):
                 response.append(answer.upper())
             else:
-                print("Error Adding ", courses_attributes[i], ". (Make sure answer is 4 characters long).")
+                print("Error Adding " + courses_attributes[i] + ". (Make sure answer is 4 characters long).")
                 continue
         #start/end time
         if (i == 3 or i == 4):
@@ -183,7 +184,7 @@ def add_course_to_system(conn):
                 time = datetime.strptime(answer, format)
                 response.append(time.strftime(format))
             except ValueError:
-                print("Error Adding ", courses_attributes[i], ". (Make sure in format hh:mm AM/PM)")
+                print("Error Adding " + courses_attributes[i] + ". (Make sure in format hh:mm AM/PM).")
                 continue
         #days of week
         if(i == 5):
@@ -200,25 +201,62 @@ def add_course_to_system(conn):
             else:
                 flag = 1
             if (flag):
-                print("Error Adding", courses_attributes[i], ". (Make sure answer is M T W TR or F. For multiple days, seperate with a space")
+                print("Error Adding " + courses_attributes[i] + ". (Make sure answer is M T W TR or F. For multiple days, seperate with a space).")
                 continue
-            response.append(tuple(days))
+            delim = ','
+            response.append(delim.join(days))
+        #semester
+        if (i == 6):
+            semester_list = ['SPRING', 'SUMMER', 'FALL']
+            if((len(answer) > 0) & (answer.upper() in semester_list)):
+                response.append(answer.upper())
+            else:
+                print("Error Adding " + courses_attributes[i] + ". (Make sure answer is SPRING, SUMMER, or FALL).")
+                continue
+        #year
+        if (i == 7):
+            try: 
+                int(answer)
+            except ValueError:
+                print("Input is not an integer!")
+                continue
+            if ((len(answer) == 4)):
+                response.append(int(answer))
+            else:
+                print("Error Adding " + courses_attributes[i] + ". (Make sure answer is a 4 digit year).")
+                continue
+        #credits
+        if (i == 8):
+            try: 
+                int(answer)
+                response.append(int(answer))
+            except ValueError:
+                print("Error Adding " + courses_attributes[i] + ". (Make sure answer is an integer).")
+                continue
         print(response)
         i += 1
+    insert_row(conn, "COURSES", tuple(courses_attributes[0:9]), tuple(response))
 
-
-
-
-    insert_row(conn, "COURSES", tuple(courses_attributes[0:8]), tuple(response))
-
-#def remove_course_from_system():
-
-#def remove_course_from_schedule(conn, student_id, course_crn):
-
-def remove_student(conn, student_name):
+def remove_course_from_system(conn, course_crn):
     cur = conn.cursor()
     try:
-        print("DELETE FROM STUDENT WHERE NAME = '{}'".format(student_name))
-        cur.execute("DELETE FROM STUDENT WHERE NAME = '{}'".format(student_name))
+        print("DELETE FROM COURSES WHERE CRN = '{}'".format(course_crn))
+        cur.execute("DELETE FROM COURSES WHERE CRN = '{}'".format(course_crn))
+    except Error as e:
+        print(e)
+
+def remove_course_from_schedule(conn, student_id, course_crn):
+    cur = conn.cursor()
+    try:
+        print("DELETE FROM SCHEDULE WHERE STUDENT_ID = '{}' AND COURSE_ID = '{}'".format(student_id, course_crn))
+        cur.execute("DELETE FROM SCHEDULE WHERE STUDENT_ID = '{}' AND COURSE_ID = '{}'".format(student_id, course_crn))
+    except Error as e:
+        print(e)
+
+def remove_student(conn, student_id):
+    cur = conn.cursor()
+    try:
+        print("DELETE FROM STUDENT WHERE ID = '{}'".format(student_id))
+        cur.execute("DELETE FROM STUDENT WHERE ID = '{}'".format(student_id))
     except Error as e:
         print(e)
