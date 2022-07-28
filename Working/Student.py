@@ -9,6 +9,7 @@ class Student(User):
 
     def search_course(self):
         print("Search course for Student!")
+        #leave empty for all courses
     def add_course(self):
         print("Add Course for Student!")
     def drop_course(self):

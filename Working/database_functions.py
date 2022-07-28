@@ -28,12 +28,12 @@ def remove_table(conn, table):
     except Error as e:
         print(e)
 
-def print_table(conn, table):
+def get_table(conn, table):
     cur = conn.cursor()
     try:
         print("SELECT * FROM {}".format(table))
         cur.execute("SELECT * FROM {}".format(table))
-        print(cur.fetchall())
+        return cur.fetchall()
     except Error as e:
         print(e)
 

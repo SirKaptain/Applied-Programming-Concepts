@@ -8,7 +8,7 @@ import pandas as pd
 conn = create_connection('./Working/database.db') 
 
 #removing tables if already exists
-def remove_all_tables():
+def remove_all_tables(conn):
     remove_table(conn, "LOGIN")
     remove_table(conn, "STUDENT")
     remove_table(conn, "INSTRUCTOR")
@@ -17,7 +17,7 @@ def remove_all_tables():
     remove_table(conn, "SCHEDULE")
 
 #creating necessary tables
-def setup_all_tables():
+def setup_all_tables(conn):
     create_table(conn, "LOGIN", "ID text primary key, PASSWORD text")
     create_table(conn, "STUDENT", "ID text primary key, NAME text, SURNAME text, GRADYEAR int, MAJOR char(4), EMAIL text")
     create_table(conn, "INSTRUCTOR", "ID text primary key, NAME text, SURNAME text, TITLE text, HIREYEAR int, DEPT char(4), EMAIL text")
@@ -54,7 +54,7 @@ for i in get_table_info(conn, "COURSES"):
 
 #populates all tables with ID's and the login table with ID's and passwords
 #generates 100 random "W00 + 6 digit" id's and "4 character" passwords
-def populate_ID_and_PW():
+def populate_ID_and_PW(conn):
     for i in range(100):
         id = ('W00' + '{:06}'.format(random.randrange(1, 10**6)))
         password = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(4))
@@ -75,10 +75,28 @@ def populate_courses(conn):
     cur = conn.cursor()
     for row in df.itertuples():
         cur.execute("INSERT INTO COURSES (CRN, TITLE, DEPT, START_TIME, END_TIME, DAYS_OF_WEEK, SEMESTER, YEAR, CREDITS) VALUES ('{}','{}','{}','{}','{}','{}','{}','{}','{}')".format(row.CRN, row.TITLE, row.DEPT, row.START_TIME, row.END_TIME, row.DAYS_OF_WEEK, row.SEMESTER, row.YEAR, row.CREDITS))
-populate_courses(conn)
-conn.commit()
 
-add_course_to_system(conn)
+remove_all_tables(conn)
+setup_all_tables(conn)
+populate_ID_and_PW(conn)
+conn.commit()
+populate_courses(conn)
+
+courses_table = get_table(conn, "COURSES")
+for i in courses_table:
+    print("CRN:", i[0])
+    print("TITLE:", i[1])
+    print("DEPT:", i[2])
+    print("START_TIME:", i[3])
+    print("END_TIME:", i[4])
+    print("DAYS_OF_WEEK:", i[5])
+    print("SEMESTER:", i[6])
+    print("YEAR:", i[7])
+    print("CREDITS:", i[8])
+    print("INSTRUCTOR:", i[9])
+    print("\n\n")
+
+#add_course_to_system(conn)
 
 #remove_course_from_schedule(conn, "W00397674", "23456")
 
