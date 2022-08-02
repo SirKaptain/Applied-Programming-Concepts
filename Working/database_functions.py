@@ -98,6 +98,12 @@ def get_table_info(conn, table):
     except Error as e:
         print(e)
 
+def get_attributes(conn, table):
+    attributes = []
+    for i in get_table_info(conn, table):
+        attributes.append(i[1])
+    return attributes
+
 def find_matching_instructors(conn):
     cur = conn.cursor()
     print("SELECT INSTRUCTOR.NAME, INSTRUCTOR.SURNAME, COURSES.TITLE FROM INSTRUCTOR INNER JOIN COURSES ON INSTRUCTOR.DEPT = COURSES.DEPT")
