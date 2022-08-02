@@ -2,9 +2,18 @@ from User import User
 
 class Admin(User):
 
-    def __init__(self, first_name="First Name", last_name="Last Name", id="W00000000"):
-        super().__init__(first_name, last_name, id)
+    def __init__(self, id, first_name, last_name, title, office, email):
+        super().__init__(id, first_name, last_name, email)
+        self.title = title
+        self.office = office
 
+    def show_info(self):
+        print(self.id)
+        print (self.first_name)
+        print(self.last_name)
+        print(self.title)
+        print(self.office)
+        print(self.email)
 
     def add_course(self):
         print("Add Course for Admin!")

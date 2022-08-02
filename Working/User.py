@@ -1,8 +1,9 @@
 class User:
-    def __init__(self, first_name = "First Name", last_name = "Last Name", id = "W00000000"):
+    def __init__(self, id = "W00000000", first_name = "First Name", last_name = "Last Name", email = "Email"):
+        self.id = id
         self.first_name = first_name
         self.last_name = last_name
-        self.id = id
+        self.email = email
 
     def set_first_name(self, new_first_name):
         self.first_name = new_first_name

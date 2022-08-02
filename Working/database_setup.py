@@ -52,7 +52,6 @@ courses_attributes = get_attributes(conn, "COURSES")
 
 #initially populate the students table from a .csv file
 def populate_students(conn):
-    #populating student table from csv file
     data = pd.read_csv ('./Working/initial_student_table.csv')   
     df = pd.DataFrame(data)
     cur = conn.cursor()
@@ -61,7 +60,6 @@ def populate_students(conn):
 
 #initially populate the instructor table from a .csv file
 def populate_instructors(conn):
-    #populating instructor table from csv file
     data = pd.read_csv ('./Working/initial_instructor_table.csv')   
     df = pd.DataFrame(data)
     cur = conn.cursor()
@@ -70,7 +68,6 @@ def populate_instructors(conn):
 
 #initially populate the admin table from a .csv file
 def populate_admins(conn):
-    #populating admin table from csv file
     data = pd.read_csv ('./Working/initial_admin_table.csv')   
     df = pd.DataFrame(data)
     cur = conn.cursor()
@@ -79,20 +76,21 @@ def populate_admins(conn):
 
 #initially populate the courses table from a .csv file
 def populate_courses(conn):
-    #populating courses table from csv file
     data = pd.read_csv ('./Working/initial_courses_table.csv')   
     df = pd.DataFrame(data)
     cur = conn.cursor()
     for row in df.itertuples():
         cur.execute("INSERT INTO COURSES (CRN, TITLE, DEPT, START_TIME, END_TIME, DAYS_OF_WEEK, SEMESTER, YEAR, CREDITS) VALUES ('{}','{}','{}','{}','{}','{}','{}','{}','{}')".format(row.CRN, row.TITLE, row.DEPT, row.START_TIME, row.END_TIME, row.DAYS_OF_WEEK, row.SEMESTER, row.YEAR, row.CREDITS))
 
+#initially populate the login table from a .csv file
 def populate_login(conn):
-    #populating courses table from csv file
     data = pd.read_csv ('./Working/initial_login_table.csv')   
     df = pd.DataFrame(data)
     cur = conn.cursor()
     for row in df.itertuples():
         cur.execute("INSERT INTO LOGIN (ID, PASSWORD) VALUES ('{}','{}')".format(row.ID, row.PASSWORD))
+
+
 remove_all_tables(conn)
 setup_all_tables(conn)
 populate_students(conn)
