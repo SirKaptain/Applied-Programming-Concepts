@@ -27,29 +27,6 @@ def setup_all_tables(conn):
     #creating many-to-many mapping table for student schedules (one student belongs to many courses, and one course belongs to many students)
     create_table(conn, "SCHEDULE", "STUDENT_ID text, COURSE_ID text, FOREIGN KEY(STUDENT_ID) REFERENCES STUDENT(ID), FOREIGN KEY(COURSE_ID) REFERENCES COURSES(CRN)")
 
-#gets a list of the names of the attributes in the tables
-login_attributes = get_attributes(conn, "LOGIN")
-student_attributes = get_attributes(conn, "STUDENT")
-instructor_attributes = get_attributes(conn, "INSTRUCTOR")
-admin_attributes = get_attributes(conn, "ADMIN")
-schedule_attributes = get_attributes(conn, "SCHEDULE")
-courses_attributes = get_attributes(conn, "COURSES")
-
-#populates all tables with ID's and the login table with ID's and passwords
-#generates 100 random "W00 + 6 digit" id's and "4 character" passwords
-# def populate_ID_and_PW(conn):
-#     for i in range(100):
-#         id = ('W00' + '{:06}'.format(random.randrange(1, 10**6)))
-#         password = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(4))
-#         if (i < 60):
-#             insert_row(conn, "STUDENT", "('{}')".format(student_attributes[0]), "('{}')".format(id))
-#         elif (i < 90):
-#             insert_row(conn, "INSTRUCTOR", "('{}')".format(instructor_attributes[0]), "('{}')".format(id))
-#         elif (i <= 100):
-#             insert_row(conn, "ADMIN", "('{}')".format(admin_attributes[0]), "('{}')".format(id))
-
-#         insert_row(conn, "LOGIN", tuple(login_attributes), "('{}','{}')".format(id, password))
-
 #initially populate the students table from a .csv file
 def populate_students(conn):
     data = pd.read_csv ('./Working/initial_student_table.csv')   
@@ -98,29 +75,5 @@ populate_instructors(conn)
 populate_admins(conn)
 populate_courses(conn)
 populate_login(conn)
-conn.commit()
-
-
-courses_table = get_table(conn, "COURSES")
-for i in courses_table:
-    print("CRN:", i[0])
-    print("TITLE:", i[1])
-    print("DEPT:", i[2])
-    print("START_TIME:", i[3])
-    print("END_TIME:", i[4])
-    print("DAYS_OF_WEEK:", i[5])
-    print("SEMESTER:", i[6])
-    print("YEAR:", i[7])
-    print("CREDITS:", i[8])
-    print("INSTRUCTOR:", i[9])
-    print("\n\n")
-
-#add_course_to_system(conn)
-
-#remove_course_from_schedule(conn, "W00397674", "23456")
-
-
-
-#ending for db modification
 conn.commit()
 conn.close()

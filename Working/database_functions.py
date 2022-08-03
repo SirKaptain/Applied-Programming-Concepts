@@ -77,8 +77,8 @@ def get_table_names(conn):
     list = []
     cur = conn.cursor()
     try:
-        print("SELECT name FROM sqlite_master WHERE type='table';")
-        cur.execute("SELECT name FROM sqlite_master WHERE type='table';")
+        print("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name ASC;")
+        cur.execute("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name ASC;")
         tables = cur.fetchall()
         for i in tables:
             list.append(i[0])
