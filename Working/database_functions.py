@@ -243,13 +243,22 @@ def add_course_to_system(conn):
         i += 1
     insert_row(conn, "COURSES", tuple(courses_attributes[0:9]), tuple(response))
 
-def remove_course_from_system(conn, course_crn):
+def remove_course_from_system(conn):
     cur = conn.cursor()
-    try:
-        print("DELETE FROM COURSES WHERE CRN = '{}'".format(course_crn))
-        cur.execute("DELETE FROM COURSES WHERE CRN = '{}'".format(course_crn))
-    except Error as e:
-        print(e)
+    crn_list = []
+    cur = conn.cursor()
+    cur.execute("SELECT COURSES.CRN FROM COURSES")
+    fetch = cur.fetchall()
+    crn_list = [int(item) for t in fetch for item in t]
+    while (crn != '0'):
+        crn = input("What course would you like to remove? (Enter 0 to exit): ")
+        if (crn in crn_list):
+            print("DELETE FROM COURSES WHERE CRN = '{}'".format(crn))
+            cur.execute("DELETE FROM COURSES WHERE CRN = '{}'".format(crn))
+        elif(crn == '0'):
+            break
+        else:
+            print("Invalid CRN")
 
 def remove_course_from_schedule(conn, student_id, course_crn):
     cur = conn.cursor()
@@ -266,3 +275,56 @@ def remove_student(conn, student_id):
         cur.execute("DELETE FROM STUDENT WHERE ID = '{}'".format(student_id))
     except Error as e:
         print(e)
+
+def search_courses(conn):
+    #gets a set of all possible departments in the list
+        dept_list = {}
+        cur = conn.cursor()
+        cur.execute("SELECT COURSES.DEPT FROM COURSES")
+        fetch = cur.fetchall()
+        dept_list = {item for t in fetch for item in t}
+
+        #actual loop that runs to search for course
+        while True:
+            print("Enter a department or leave blank for everything!")
+            print("0) Exit      1)List Deprtments")
+            parameter = (input("Input: ")).upper()
+
+            if (parameter == ''): #search for everything
+                courses_table = get_table(conn, "COURSES")
+                for i in courses_table:
+                    print("\n")
+                    print("CRN:", i[0])
+                    print("TITLE:", i[1])
+                    print("DEPT:", i[2])
+                    print("START_TIME:", i[3])
+                    print("END_TIME:", i[4])
+                    print("DAYS_OF_WEEK:", i[5])
+                    print("SEMESTER:", i[6])
+                    print("YEAR:", i[7])
+                    print("CREDITS:", i[8])
+                    print("INSTRUCTOR:", i[9])
+                    print("\n")
+            elif (parameter == '1'):    #list departments
+                for i in dept_list:
+                    print(i, end='\t')
+                print("\n")
+            elif ((len(parameter) == 4) and not(any([char.isdigit() for char in parameter])) and (parameter in dept_list)): #correct input
+                courses = search_table(conn, "COURSES", "DEPT", "{}".format(parameter))
+                for i in courses:
+                    print("\n")
+                    print("CRN:", i[0])
+                    print("TITLE:", i[1])
+                    print("DEPT:", i[2])
+                    print("START_TIME:", i[3])
+                    print("END_TIME:", i[4])
+                    print("DAYS_OF_WEEK:", i[5])
+                    print("SEMESTER:", i[6])
+                    print("YEAR:", i[7])
+                    print("CREDITS:", i[8])
+                    print("INSTRUCTOR:", i[9])
+                    print("\n")
+            elif (parameter == '0'):    #exit
+                break
+            else:
+                print("Invalid Option! Enter a department name or one of the options!\n")
