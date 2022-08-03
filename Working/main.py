@@ -3,7 +3,7 @@ from Instructor import Instructor
 from Admin import Admin
 from database_functions import *
 
-conn = create_connection('./Working/database.db')
+conn = create_connection('assignment_5_base.db')
 
 while True:
     #login block, searches each table for input and makes object based off of search result
@@ -41,19 +41,31 @@ while True:
                 user = Admin(user_info[0][0], user_info[0][1], user_info[0][2], user_info[0][3], user_info[0][4], user_info[0][5], user_info[0][6])
             break
         else:
-            print("Incorrect Credentials! Pleas Try Again.")
+            print("Incorrect Credentials! Please Try Again.")
 
 user.show_info()
 
-# if (len(student_info) > 0): #if found an entry
-#     user = Student(student_info[0][0], student_info[0][1], student_info[0][2], student_info[0][3], student_info[0][4], student_info[0][5])
-# elif (len(instructor_info) > 0): #if found an entry
-#     user = Instructor(instructor_info[0][0], instructor_info[0][1], instructor_info[0][2], instructor_info[0][3], instructor_info[0][4], instructor_info[0][5], instructor_info[0][6])
-# elif (len(admin_info) > 0): #if found an entry
-#     user = Admin(admin_info[0][0], admin_info[0][0], admin_info[0][1], admin_info[0][2], admin_info[0][3], admin_info[0][4], admin_info[0][5], admin_info[0][6])
-# else:
-#     print("Invalid Username!")
+if (type(user)==Student):
+    choice = input("Would you like to add course to schedule(0), remove course from schedule(1), print schedule(2), or search a course(3)")
+    choice = int(choice)
+    if choice == 0:
+        user.add_course()
+    elif choice == 1:
+        user.drop_course()
+    elif choice == 2:
+        user.print_schedule()
+    elif choice == 3:
+        user.search_course()
 
-
-
-
+elif (type(user)==Instructor):
+    choice = input("Would you like to search courses")
+    if choice == 0:
+        search_courses
+elif (type(user)==Admin):
+    choice = input("Would you like to add course to system")
+    if choice == 0:
+        add_course_to_system
+    elif choice == 1:
+        remove_course_from_system
+    elif choice == 2:
+        remove_student
