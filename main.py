@@ -36,12 +36,10 @@ while True:
             elif (table == "INSTRUCTOR"):
                 user = Instructor(user_info[0][0], user_info[0][1], user_info[0][2], user_info[0][3], user_info[0][4], user_info[0][5], user_info[0][6])
             elif (table == "ADMIN"):
-                user = Admin(user_info[0][0], user_info[0][1], user_info[0][2], user_info[0][3], user_info[0][4], user_info[0][5], user_info[0][6])
+                user = Admin(user_info[0][0], user_info[0][1], user_info[0][2], user_info[0][3], user_info[0][4], user_info[0][5])
             break
-        else:
-            print("Incorrect Password!")
     else:
-        print("No Such User!")
+        print("Invalid Credentials! Please Try Again.")
         continue
 
 #-----------------------------------------MAIN CHOICES---------------------------------------------#
@@ -82,12 +80,12 @@ elif (type(user)==Instructor):
 elif (type(user)==Admin):
     choice = 111
     while choice != 10:
-        choice = int(choice)
         choice = input("""Would you like to add course to system (0), 
         remove course from system (1), add user to system (2), 
         remove user from system (3),  add student to course (4), 
         remove student from course (5), print roster (6), 
         search course (7), or exit (10): """)
+        choice = int(choice)
         if choice == 0:
             user.add_course()
         elif choice == 1:
