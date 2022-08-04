@@ -137,7 +137,16 @@ def print_student_schedule(conn, student_id):
         
 #print all students in class
 #def assemble_roster():
-    #assign class to instructor based off department
+    
+def print_instructor_schedule(conn, instructor_id):
+    cur = conn.cursor()
+    try:
+        print("SELECT COURSES FROM INSTRUCTOR, COURSES, SCHEDULE WHERE INSTRUCTOR.ID = SCHEDULE.INSTRUCTOR_ID AND COURSES.CRN = SCHEDULE.COURSE_ID AND ID = '{}'".format(instructor_id))
+        cur.execute("SELECT COURSES FROM INSTRUCTOR, COURSES, SCHEDULE WHERE INSTRUCTOR.ID = SCHEDULE.INSTRUCTOR_ID AND COURSES.CRN = SCHEDULE.COURSE_ID AND ID = '{}'".format(instructor_id))
+    except Error as e:
+        print(e)
+        
+#assign class to instructor based off department
 
 def add_course_to_system(conn):
     #getting list of attributes in COURSES table
@@ -318,8 +327,9 @@ def search_courses(conn):
                 break
             else:
                 print("Invalid Option! Enter a department name or one of the options!\n")
-def print_course_roster(conn, instructor_id):
+def print_course_roster(conn):
     cur = conn.cursor()
-    tables = get_table_names(conn)
     crn = input("Please enter the course ID you would like to search")
     cur.execute("SELECT SCHEDULE.STUDENT_ID FROM SCHEDULE WHERE COURSE_ID = '{}'".format(crn.upper()))
+    course_roster = cur.fetchall()
+    print(course_roster)

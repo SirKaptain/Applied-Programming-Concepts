@@ -46,19 +46,21 @@ while True:
 user.show_info()
 
 if (type(user)==Student):
-    choice = input("Would you like to add course to schedule(0), remove course from schedule(1), print schedule(2), or search a course(3)")
+    choice = input("Would you like to add course to schedule (0), remove course from schedule (1), print schedule (2), or search a course (3)")
     choice = int(choice)
     if choice == 0:
-        user.add_course(cur, )
+        course_id = input("Enter course ID: ")
+        user.add_course(conn, course_id)
     elif choice == 1:
-        user.drop_course()
+        course_id = input("Enter course ID: ")
+        user.drop_course(conn, course_id)
     elif choice == 2:
         user.print_schedule()
     elif choice == 3:
         user.search_course()
 
 elif (type(user)==Instructor):
-    choice = input("Would you like to search courses, or print classlist")
+    choice = input("Would you like to search courses (0), or print classlist (1)")
     if choice == 0:
         user.search_course()
     elif choice == 1:

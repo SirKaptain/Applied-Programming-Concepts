@@ -73,8 +73,8 @@ class Student(User):
 
         #leave empty for all courses
 
-    def add_course(self, conn, student_id, course_crn):
-        add_course_to_schedule(conn, student_id, course_crn)
+    def add_course(self, conn, course_crn):
+        add_course_to_schedule(conn, self.id, course_crn)
     def drop_course(self, conn, student_id, course_crn):
         remove_course_from_schedule(conn, student_id, course_crn)
     def print_schedule(self, conn, student_id):
