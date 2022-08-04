@@ -18,7 +18,6 @@ while True:
         cur.execute("SELECT * FROM {} WHERE ID = '{}' OR EMAIL = '{}';".format(table, id.upper(), id.lower()))
         user_info = cur.fetchall()
         if (len(user_info) > 0): #found user in database
-            print(table)
             break
         else:
             flag += 1
@@ -29,7 +28,6 @@ while True:
         #check login table for correct password
         cur.execute("SELECT LOGIN.PASSWORD FROM LOGIN WHERE ID = '{}'".format(user_info[0][0]))
         user_password = cur.fetchall()
-        print(user_password)
 
         if (password == user_password[0][0]): #password correct
             #make object then break from login loop
@@ -42,8 +40,6 @@ while True:
             break
         else:
             print("Incorrect Credentials! Please Try Again.")
-
-user.show_info()
 
 if (type(user)==Student):
     choice = 111
