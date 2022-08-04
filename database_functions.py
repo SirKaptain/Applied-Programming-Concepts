@@ -254,11 +254,22 @@ def add_course_to_system(conn):
 
 def remove_course_from_system(conn, course_crn):
     cur = conn.cursor()
-    try:
-        print("DELETE FROM COURSES WHERE CRN = '{}'".format(course_crn))
-        cur.execute("DELETE FROM COURSES WHERE CRN = '{}'".format(course_crn))
-    except Error as e:
-        print(e)
+    crn_list = []
+    cur = conn.cursor()
+    cur.execute("SELECT COURSES.CRN FROM COURSES")
+    fetch = cur.fetchall()
+    crn_list = [int(item) for t in fetch for item in t]
+
+    crn = 1
+    while (crn != '0'):
+        crn = input("What course would you like to remove? (Enter 0 to exit): ")
+        if (crn in crn_list):
+            print("DELETE FROM COURSES WHERE CRN = '{}'".format(crn))
+            cur.execute("DELETE FROM COURSES WHERE CRN = '{}'".format(crn))
+        elif(crn == '0'):
+            break
+        else:
+            print("Invalid CRN")
 
 def remove_course_from_schedule(conn, student_id, course_crn):
     cur = conn.cursor()
@@ -333,3 +344,42 @@ def print_course_roster(conn):
     cur.execute("SELECT SCHEDULE.STUDENT_ID FROM SCHEDULE WHERE COURSE_ID = '{}'".format(crn.upper()))
     course_roster = cur.fetchall()
     print(course_roster)
+
+def add_user(conn):
+    while (response != 0):
+        print("Would you like to add 1) Student 2) Instructor 3) Admin 0) Exit")
+        response = input("Input: ")
+        if (response == '1'):
+            table = "STUDENT"
+        elif (response == '2'):
+            table = "INSTRUCTOR"
+        elif (response == '3'):
+            table = "ADMIN"
+        elif (response == '0'):
+            break
+        else:
+            print("Invalid Response!")
+            continue
+        answer = []
+        for i in get_attributes(conn, table):
+            answer.append(input(i + "?: "))
+        insert_row(conn, table, get_attributes(conn, table), tuple(answer))
+
+def remove_user(conn):
+    while (response != 0):
+        print("Would you like to remove 1) Student 2) Instructor 3) Admin 0) Exit")
+        response = input("Input: ")
+        if (response == '1'):
+            table = "STUDENT"
+        elif (response == '2'):
+            table = "INSTRUCTOR"
+        elif (response == '3'):
+            table = "ADMIN"
+        elif (response == '0'):
+            break
+        else:
+            print("Invalid Response!")
+            continue
+        id = input("Please enter ID number to remove: ")
+        remove_row(conn, table, "ID", id)
+        

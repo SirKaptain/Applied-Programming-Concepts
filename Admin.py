@@ -1,4 +1,5 @@
 from User import User
+from database_functions import *
 
 class Admin(User):
 
@@ -15,23 +16,19 @@ class Admin(User):
         print(self.office)
         print(self.email)
 
-    def add_course(self):
-        print("Add Course for Admin!")
-    def remove_course(self):
-        print("Remove Course for Admin!")
-    def add_user(self):
-        print("Add User for Admin!")
-    def remove_user(self):
-        print("Remove User for Admin!")
-    def add_student_to_course(self):
-        print("Add Student to Course for Admin!")
-    def remove_student_from_course(self):
-        print("Remove Student from Course for Admin!")
+    def add_course(self, conn):
+        add_course_to_system(conn)
+    def remove_course(self, conn, course_crn):
+        remove_course_from_system(conn, course_crn)
+    def add_user(self, conn):
+        add_user(conn)
+    def remove_user(self, conn):
+        remove_user(conn)
+    def add_student_to_course(self, conn, student_id, course_crn):
+        add_course_to_schedule(conn, student_id, course_crn)
+    def remove_student_from_course(self, conn, student_id, course_crn):
+        remove_course_from_schedule(conn, student_id, course_crn)
     def search_roster(self):
         print("Search Roster for Admin!")
     def print_roster(self):
         print("Print Roster for Admin!")
-    def search_course(self):
-        print("Search Course for Admin!")
-    def print_course(self):
-        print("Print Course for Admin!")
