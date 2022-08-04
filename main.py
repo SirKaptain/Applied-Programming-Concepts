@@ -38,8 +38,10 @@ while True:
             elif (table == "ADMIN"):
                 user = Admin(user_info[0][0], user_info[0][1], user_info[0][2], user_info[0][3], user_info[0][4], user_info[0][5], user_info[0][6])
             break
+        else:
+            print("Incorrect Password!")
     else:
-        print("Invalid Credentials! Please Try Again.")
+        print("No Such User!")
         continue
 
 #-----------------------------------------MAIN CHOICES---------------------------------------------#

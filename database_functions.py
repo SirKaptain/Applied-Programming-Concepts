@@ -138,6 +138,7 @@ def remove_course_from_schedule(conn, student_id, course_crn ):
     try:
         print("DELETE FROM SCHEDULE WHERE STUDENT_ID = '{}' AND COURSE_ID = '{}'".format(student_id, course_crn))
         cur.execute("DELETE FROM SCHEDULE WHERE STUDENT_ID = '{}' AND COURSE_ID = '{}'".format(student_id, course_crn))
+        conn.commit()
     except Error as e:
         print(e)
 
@@ -283,6 +284,7 @@ def add_course_to_system(conn):
         print(response)
         i += 1
     insert_row(conn, "COURSES", tuple(courses_attributes[0:9]), tuple(response))
+    conn.commit()
 
 def remove_course_from_system(conn, course_crn):
     cur = conn.cursor()
@@ -294,10 +296,10 @@ def remove_course_from_system(conn, course_crn):
 
     crn = 1
     while (crn != '0'):
-        crn = input("What course would you like to remove? (Enter 0 to exit): ")
+        crn = input("What course crn would you like to remove? (Enter 0 to exit): ")
         if (crn in crn_list):
-            print("DELETE FROM COURSES WHERE CRN = '{}'".format(crn))
             cur.execute("DELETE FROM COURSES WHERE CRN = '{}'".format(crn))
+            conn.commit()
         elif(crn == '0'):
             break
         else:
@@ -308,6 +310,7 @@ def remove_course_from_schedule(conn, student_id, course_crn):
     try:
         print("DELETE FROM SCHEDULE WHERE STUDENT_ID = '{}' AND COURSE_ID = '{}'".format(student_id, course_crn))
         cur.execute("DELETE FROM SCHEDULE WHERE STUDENT_ID = '{}' AND COURSE_ID = '{}'".format(student_id, course_crn))
+        conn.commit()
     except Error as e:
         print(e)
 
@@ -316,6 +319,7 @@ def remove_student(conn, student_id):
     try:
         print("DELETE FROM STUDENT WHERE ID = '{}'".format(student_id))
         cur.execute("DELETE FROM STUDENT WHERE ID = '{}'".format(student_id))
+        conn.commit()
     except Error as e:
         print(e)
 def search_courses(conn):
@@ -396,6 +400,7 @@ def add_user(conn):
         for i in get_attributes(conn, table):
             answer.append(input(i + "?: "))
         insert_row(conn, table, get_attributes(conn, table), tuple(answer))
+        conn.commit()
 
 def remove_user(conn):
     while (response != 0):
@@ -414,4 +419,5 @@ def remove_user(conn):
             continue
         id = input("Please enter ID number to remove: ")
         remove_row(conn, table, "ID", id)
+        conn.commit()
         
