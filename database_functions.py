@@ -2,7 +2,8 @@ import sqlite3
 from sqlite3 import Error
 from datetime import datetime
 
-
+#Input: directory of database file
+#Return: connection object
 def create_connection(db_file):
     conn = None
     try:
@@ -12,67 +13,74 @@ def create_connection(db_file):
 
     return conn
 
+#Input: connection object, table name as a string, attributes as a comma delimited string
+#Return: N/A
 def create_table(conn, table, attribute):
     cur = conn.cursor()
     try:
-        print("CREATE TABLE {} ({})".format(table, attribute))
         cur.execute("CREATE TABLE {} ({})".format(table, attribute))
     except Error as e:
         print(e)
 
+#Input: connection object, table name as a string
+#Return: N/A
 def remove_table(conn, table):
     cur = conn.cursor()
     try:
-        print("DROP TABLE {}".format(table))
         cur.execute("DROP TABLE {}".format(table))
     except Error as e:
         print(e)
 
+#Input: connection object, table name as a string
+#Return: List of rows as a tuple
 def get_table(conn, table):
     cur = conn.cursor()
     try:
-        print("SELECT * FROM {}".format(table))
         cur.execute("SELECT * FROM {}".format(table))
         return cur.fetchall()
     except Error as e:
         print(e)
 
+#Input: connection object, table name as a string, attribute as a string, value as a string
+#Return: list of searched row as tuple
 def search_table(conn, table, attribute, value):
     cur = conn.cursor()
     try:
-        print("SELECT * FROM {} WHERE {} = '{}'".format(table, attribute, value))
         cur.execute("SELECT * FROM {} WHERE {} = '{}'".format(table, attribute, value))
         data = cur.fetchall()
         return data
     except Error as e:
         print(e)
 
+#Input: connection object, table name as a string, attributes as a comma delimited string, values as a tuple
+#Return: N/A
 def insert_row(conn, table, attributes, values):
     cur = conn.cursor()
     try:
-        print("INSERT INTO {} {} VALUES {}".format(table, attributes, values))
         cur.execute("INSERT INTO {} {} VALUES {}".format(table, attributes, values))
     except Error as e:
         print(e)
 
+#Input: connection object, table name as a string, attribute as a string, value as a string
+#Return: N/A
 def remove_row(conn, table, attribute, value):
     cur = conn.cursor()
     try:
-        print("DELETE FROM '{}' WHERE '{}' = '{}'".format(table, attribute, value))
         cur.execute("DELETE FROM '{}' WHERE '{}' = '{}'".format(table, attribute, value))
     except Error as e:
         print(e)
 
-def update_value(conn, table, id, id_value, attribute, new_value):
+#Input: connection object, table name as a string, attribute as string, new_value as string, primary key as string, old_value as string 
+#Return: N/A
+def update_value(conn, table, attribute, new_value, primary_key, old_value):
     cur = conn.cursor()
     try:
-        print("UPDATE {} SET {} = '{}' WHERE {} = '{}'".format(table, attribute, new_value, id, id_value))
-        cur.execute("UPDATE {} SET {} = '{}' WHERE {} = '{}'".format(table, attribute, new_value, id, id_value))
-        data = cur.fetchall()
-        return data
+        cur.execute("UPDATE {} SET {} = '{}' WHERE {} = '{}'".format(table, attribute, new_value, primary_key, old_value))
     except Error as e:
         print(e)
 
+#Input: connection object
+#Return: List of tables as strings
 def get_table_names(conn):
     list = []
     cur = conn.cursor()
@@ -85,6 +93,8 @@ def get_table_names(conn):
     except Error as e:
         print(e)
 
+#Input: connection object, table name as string
+#Return: List of table info as tuples
 def get_table_info(conn, table):
     list = []
     cur = conn.cursor()
@@ -97,6 +107,8 @@ def get_table_info(conn, table):
     except Error as e:
         print(e)
 
+#Input: connection object, table name as string
+#Return: List of table attributes as strings
 def get_attributes(conn, table):
     attributes = []
     for i in get_table_info(conn, table):
@@ -132,9 +144,24 @@ def remove_course_from_schedule(conn, student_id, course_crn ):
 def print_student_schedule(conn, student_id):
     cur = conn.cursor()
     try:
-        print("SELECT COURSE_ID FROM SCHEDULE, COURSES, STUDENT WHERE STUDENT.ID = SCHEDULE.STUDENT_ID AND COURSES.CRN = SCHEDULE.COURSE_ID AND ID = '{}'".format(student_id))
-        cur.execute("SELECT COURSE_ID FROM SCHEDULE, COURSES, STUDENT WHERE STUDENT.ID = SCHEDULE.STUDENT_ID AND COURSES.CRN = SCHEDULE.COURSE_ID AND ID = '{}'".format(student_id))
-        print(cur.fetchall())
+        cur.execute("SELECT * FROM COURSES, SCHEDULE, STUDENT WHERE STUDENT.ID = SCHEDULE.STUDENT_ID AND COURSES.CRN = SCHEDULE.COURSE_ID AND ID = '{}'".format(student_id))
+        courses = cur.fetchall()
+        if (len(courses) == 0):
+            print("No Courses added!")
+        else:
+            for i in courses:
+                print("\n")
+                print("CRN:", i[0])
+                print("TITLE:", i[1])
+                print("DEPT:", i[2])
+                print("START_TIME:", i[3])
+                print("END_TIME:", i[4])
+                print("DAYS_OF_WEEK:", i[5])
+                print("SEMESTER:", i[6])
+                print("YEAR:", i[7])
+                print("CREDITS:", i[8])
+                print("INSTRUCTOR:", i[9])
+                print("\n")
     except Error as e:
         print(e)
         

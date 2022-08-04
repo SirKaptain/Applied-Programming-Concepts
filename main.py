@@ -5,8 +5,11 @@ from database_functions import *
 
 conn = create_connection('assignment_5_base.db')
 
+#---------------------------------LOGIN BLOCK----------------------------------------------#
+#User inputs ID/username
+#doesn't escape loop untill a user successfully logs in
 while True:
-    #login block, searches each table for input and makes object based off of search result
+    
     id = input("Enter your username or ID (including W00): ")
     password = input("Enter your password: ")
 
@@ -14,22 +17,19 @@ while True:
 
     flag = 0
     tables = get_table_names(conn)
-    for table in [tables[0], tables[2], tables[5]]:
+
+    for table in [tables[0], tables[2], tables[5]]: #searching only student, instructor, and admin table
         cur.execute("SELECT * FROM {} WHERE ID = '{}' OR EMAIL = '{}';".format(table, id.upper(), id.lower()))
         user_info = cur.fetchall()
         if (len(user_info) > 0): #found user in database
             break
-        else:
-            flag += 1
-    if (flag == 3):
-        print("No user found!")
 
     if (user_info): #if a user was found
         #check login table for correct password
         cur.execute("SELECT LOGIN.PASSWORD FROM LOGIN WHERE ID = '{}'".format(user_info[0][0]))
-        user_password = cur.fetchall()
+        db_password = (cur.fetchall())[0][0]
 
-        if (password == user_password[0][0]): #password correct
+        if (password == db_password): #password correct
             #make object then break from login loop
             if(table == "STUDENT"):
                 user = Student(user_info[0][0], user_info[0][1], user_info[0][2], user_info[0][3], user_info[0][4], user_info[0][5])
@@ -38,9 +38,11 @@ while True:
             elif (table == "ADMIN"):
                 user = Admin(user_info[0][0], user_info[0][1], user_info[0][2], user_info[0][3], user_info[0][4], user_info[0][5], user_info[0][6])
             break
-        else:
-            print("Incorrect Credentials! Please Try Again.")
+    else:
+        print("Invalid Credentials! Please Try Again.")
+        continue
 
+#-----------------------------------------MAIN CHOICES---------------------------------------------#
 if (type(user)==Student):
     choice = 111
     while choice != 10:
@@ -102,3 +104,5 @@ elif (type(user)==Admin):
             print("Exiting")
         else:
             print("User input invalid")
+conn.commit()
+conn.close()
