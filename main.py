@@ -18,6 +18,7 @@ while True:
         cur.execute("SELECT * FROM {} WHERE ID = '{}' OR EMAIL = '{}';".format(table, id.upper(), id.lower()))
         user_info = cur.fetchall()
         if (len(user_info) > 0): #found user in database
+            print(table)
             break
         else:
             flag += 1
@@ -28,6 +29,7 @@ while True:
         #check login table for correct password
         cur.execute("SELECT LOGIN.PASSWORD FROM LOGIN WHERE ID = '{}'".format(user_info[0][0]))
         user_password = cur.fetchall()
+        print(user_password)
 
         if (password == user_password[0][0]): #password correct
             #make object then break from login loop
@@ -40,6 +42,8 @@ while True:
             break
         else:
             print("Incorrect Credentials! Please Try Again.")
+
+user.show_info()
 
 if (type(user)==Student):
     choice = 111
@@ -54,6 +58,8 @@ if (type(user)==Student):
             user.drop_course(conn, course_id)
         elif choice == 2:
             user.print_schedule(conn)
+        elif choice == 10:
+            print("Exiting")
         else:
             print("User input invalid")
 
@@ -67,6 +73,8 @@ elif (type(user)==Instructor):
             user.print_classlist(conn)
         elif choice == 2:
             user.search_course(conn)
+        elif choice == 10:
+            print("Exiting")
         else:
             print("User input invalid")
     
@@ -76,8 +84,8 @@ elif (type(user)==Admin):
         choice = input("""Would you like to add course to system (0), 
         remove course from system (1), add user to system (2), 
         remove user from system (3),  add student to course (4), 
-        remove student from course (5), search roster (6)
-        print roster (7), search course (8), or exit (10): """)
+        remove student from course (5), print roster (6), 
+        search course (7), or exit (10): """)
         if choice == 0:
             user.add_course()
         elif choice == 1:
@@ -91,11 +99,10 @@ elif (type(user)==Admin):
         elif choice == 5:
             user.remove_student_from_course()
         elif choice == 6:
-            user.search_roster()
-        elif choice == 7:
             user.print_roster()
-        elif choice == 8:
+        elif choice == 7:
             user.search_course()
-
+        elif choice == 10:
+            print("Exiting")
         else:
             print("User input invalid")
