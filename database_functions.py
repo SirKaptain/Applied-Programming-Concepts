@@ -115,6 +115,7 @@ def add_course_to_schedule(conn, student_id, course_crn):
     try:
         print("INSERT INTO SCHEDULE('STUDENT_ID', 'COURSE_ID') VALUES ('{}', '{}')".format(student_id, course_crn))
         cur.execute("INSERT INTO SCHEDULE('STUDENT_ID', 'COURSE_ID') VALUES ('{}', '{}')".format(student_id, course_crn))
+        conn.commit()
     except Error as e:
         print(e)
     
