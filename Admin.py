@@ -28,7 +28,5 @@ class Admin(User):
         add_course_to_schedule(conn, student_id, course_crn)
     def remove_student_from_course(self, conn, student_id, course_crn):
         remove_course_from_schedule(conn, student_id, course_crn)
-    def search_roster(self):
-        print("Search Roster for Admin!")
-    def print_roster(self):
-        print("Print Roster for Admin!")
+    def print_roster(self, conn):
+        print_course_roster(conn)
