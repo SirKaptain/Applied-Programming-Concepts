@@ -105,10 +105,13 @@ def get_attributes(conn, table):
 
 def find_matching_instructors(conn):
     cur = conn.cursor()
-    print("SELECT INSTRUCTOR.NAME, INSTRUCTOR.SURNAME, COURSES.TITLE FROM INSTRUCTOR INNER JOIN COURSES ON INSTRUCTOR.DEPT = COURSES.DEPT")
-    cur.execute("SELECT INSTRUCTOR.NAME, INSTRUCTOR.SURNAME, COURSES.TITLE FROM INSTRUCTOR INNER JOIN COURSES ON INSTRUCTOR.DEPT = COURSES.DEPT")
-    fetch = cur.fetchall()
-    print(fetch)
+    try:
+        print("SELECT INSTRUCTOR.NAME, INSTRUCTOR.SURNAME, COURSES.TITLE FROM INSTRUCTOR INNER JOIN COURSES ON INSTRUCTOR.DEPT = COURSES.DEPT")
+        cur.execute("SELECT INSTRUCTOR.NAME, INSTRUCTOR.SURNAME, COURSES.TITLE FROM INSTRUCTOR INNER JOIN COURSES ON INSTRUCTOR.DEPT = COURSES.DEPT")
+        fetch = cur.fetchall()
+        print(fetch)
+    except Error as e:
+        print(e)
 
 def add_course_to_schedule(conn, student_id, course_crn):
     cur = conn.cursor()
@@ -118,7 +121,6 @@ def add_course_to_schedule(conn, student_id, course_crn):
         conn.commit()
     except Error as e:
         print(e)
-    
 def remove_course_from_schedule(conn, student_id, course_crn ):
     cur = conn.cursor()
     try:
@@ -132,6 +134,7 @@ def print_student_schedule(conn, student_id):
     try:
         print("SELECT COURSE_ID FROM SCHEDULE, COURSES, STUDENT WHERE STUDENT.ID = SCHEDULE.STUDENT_ID AND COURSES.CRN = SCHEDULE.COURSE_ID AND ID = '{}'".format(student_id))
         cur.execute("SELECT COURSE_ID FROM SCHEDULE, COURSES, STUDENT WHERE STUDENT.ID = SCHEDULE.STUDENT_ID AND COURSES.CRN = SCHEDULE.COURSE_ID AND ID = '{}'".format(student_id))
+        print(cur.fetchall())
     except Error as e:
         print(e)
         
