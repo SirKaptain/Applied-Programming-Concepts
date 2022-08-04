@@ -22,7 +22,7 @@ class Student(User):
 
     def add_course(self):
         add_course_to_schedule(conn, student_id, course_crn)
-    def drop_course(self):
-        remove_course_from_schedule(conn, student_id, course_crn )
+    def drop_course(self, conn, course_crn):
+        remove_course_from_schedule(conn, self.id, course_crn )
     def print_schedule(self):
         print_student_schedule(conn, student_id)

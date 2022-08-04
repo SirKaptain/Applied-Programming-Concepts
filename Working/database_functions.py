@@ -104,10 +104,11 @@ def get_attributes(conn, table):
         attributes.append(i[1])
     return attributes
 
+#adds instructor id to courses table if match between departments.
+#if multiple instructors available, pick random
 def find_matching_instructors(conn):
     cur = conn.cursor()
-    print("SELECT INSTRUCTOR.NAME, INSTRUCTOR.SURNAME, COURSES.TITLE FROM INSTRUCTOR INNER JOIN COURSES ON INSTRUCTOR.DEPT = COURSES.DEPT")
-    cur.execute("SELECT INSTRUCTOR.NAME, INSTRUCTOR.SURNAME, COURSES.TITLE FROM INSTRUCTOR INNER JOIN COURSES ON INSTRUCTOR.DEPT = COURSES.DEPT")
+    cur.execute("SELECT INSTRUCTOR.ID, COURSES.CRN FROM INSTRUCTOR INNER JOIN COURSES ON INSTRUCTOR.DEPT = COURSES.DEPT")
     fetch = cur.fetchall()
     print(fetch)
 
@@ -250,6 +251,8 @@ def remove_course_from_system(conn):
     cur.execute("SELECT COURSES.CRN FROM COURSES")
     fetch = cur.fetchall()
     crn_list = [int(item) for t in fetch for item in t]
+
+    crn = 1
     while (crn != '0'):
         crn = input("What course would you like to remove? (Enter 0 to exit): ")
         if (crn in crn_list):
@@ -262,11 +265,16 @@ def remove_course_from_system(conn):
 
 def remove_course_from_schedule(conn, student_id, course_crn):
     cur = conn.cursor()
-    try:
-        print("DELETE FROM SCHEDULE WHERE STUDENT_ID = '{}' AND COURSE_ID = '{}'".format(student_id, course_crn))
-        cur.execute("DELETE FROM SCHEDULE WHERE STUDENT_ID = '{}' AND COURSE_ID = '{}'".format(student_id, course_crn))
-    except Error as e:
-        print(e)
+    
+    cur = conn.cursor()
+    crn_list = []
+    cur = conn.cursor()
+    cur.execute("SELECT COURSES.CRN FROM STUDENT, COURSES, SCHEDULE WHERE STUDENT.ID = SCHEDULE.STUDENT_ID AND COURSES.CRN = SCHEDULE.COURSE_ID AND ID = '{}'".format(student_id))
+    fetch = cur.fetchall()
+    crn_list = [int(item) for t in fetch for item in t]
+
+    print("DELETE FROM SCHEDULE WHERE STUDENT.ID = '{}' AND COURSE.ID = '{}'".format(student_id, course_crn))
+    cur.execute("DELETE FROM SCHEDULE WHERE STUDENT.ID = '{}' AND COURSE.ID = '{}'".format(student_id, course_crn))
 
 def remove_student(conn, student_id):
     cur = conn.cursor()
