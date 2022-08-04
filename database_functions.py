@@ -115,73 +115,70 @@ def get_attributes(conn, table):
         attributes.append(i[1])
     return attributes
 
+def find_matching_instructors(conn):
+    cur = conn.cursor()
+    try:
+        print("SELECT INSTRUCTOR.NAME, INSTRUCTOR.SURNAME, COURSES.TITLE FROM INSTRUCTOR INNER JOIN COURSES ON INSTRUCTOR.DEPT = COURSES.DEPT")
+        cur.execute("SELECT INSTRUCTOR.NAME, INSTRUCTOR.SURNAME, COURSES.TITLE FROM INSTRUCTOR INNER JOIN COURSES ON INSTRUCTOR.DEPT = COURSES.DEPT")
+        fetch = cur.fetchall()
+        print(fetch)
+    except Error as e:
+        print(e)
 
 def add_course_to_schedule(conn, student_id, course_crn):
     cur = conn.cursor()
-    cur.execute("SELECT * FROM COURSES WHERE COURSES.CRN = '{}'".format(course_crn))
-    if (cur.fetchall()):
+    try:
+        print("INSERT INTO SCHEDULE('STUDENT_ID', 'COURSE_ID') VALUES ('{}', '{}')".format(student_id, course_crn))
         cur.execute("INSERT INTO SCHEDULE('STUDENT_ID', 'COURSE_ID') VALUES ('{}', '{}')".format(student_id, course_crn))
         conn.commit()
-        cur.execute("SELECT COURSES.TITLE FROM COURSES WHERE COURSES.CRN = '{}'".format(course_crn))
-        print("Added: " + (cur.fetchall())[0][0] + " to your schedule!")
-    else:
-        print("Invalid CRN!")
-
+    except Error as e:
+        print(e)
 def remove_course_from_schedule(conn, student_id, course_crn ):
     cur = conn.cursor()
-
-    #check if user has course in their schedule
-    cur.execute("SELECT * FROM SCHEDULE WHERE STUDENT_ID = '{}' AND COURSE_ID = '{}'".format(student_id, course_crn))
-    if (cur.fetchall()):
-        cur.execute("SELECT COURSES.TITLE FROM COURSES WHERE COURSES.CRN = '{}'".format(course_crn)) #get couse title for nice printing
-        print("Removed: " + (cur.fetchall())[0][0] + " from schedule!")
+    try:
+        print("DELETE FROM SCHEDULE WHERE STUDENT_ID = '{}' AND COURSE_ID = '{}'".format(student_id, course_crn))
         cur.execute("DELETE FROM SCHEDULE WHERE STUDENT_ID = '{}' AND COURSE_ID = '{}'".format(student_id, course_crn))
-        conn.commit()
-    else:
-        print("No such course in your schedule!")
+    except Error as e:
+        print(e)
 
 def print_student_schedule(conn, student_id):
     cur = conn.cursor()
-    cur.execute("SELECT * FROM COURSES, SCHEDULE, STUDENT, INSTRUCTOR WHERE STUDENT.ID = SCHEDULE.STUDENT_ID AND COURSES.CRN = SCHEDULE.COURSE_ID AND INSTRUCTOR.ID = COURSES.INSTRUCTOR_ID AND STUDENT.ID = '{}'".format(student_id))
-    courses = cur.fetchall()
-    if (len(courses) == 0):
-        print("No Courses in Schedule!")
-    else:
-        for i in courses:
-            print("\n")
-            print("CRN:", i[0])
-            print("TITLE:", i[1])
-            print("DEPT:", i[2])
-            print("START_TIME:", i[3])
-            print("END_TIME:", i[4])
-            print("DAYS_OF_WEEK:", i[5])
-            print("SEMESTER:", i[6])
-            print("YEAR:", i[7])
-            print("CREDITS:", i[8])
-            print("INSTRUCTOR:", i[19] + ' ' + i[20])
-            print("\n")
-    
-def print_instructor_schedule(conn, instructor_id):
-    cur = conn.cursor()
-    cur.execute("SELECT * FROM COURSES WHERE COURSES.INSTRUCTOR_ID = '{}'".format(instructor_id))
-    courses = cur.fetchall()
-    print(courses)
-    if (len(courses) == 0):
-        print("No Courses in Schedule!")
-    else:
-        for i in courses:
-            print("\n")
-            print("CRN:", i[0])
-            print("TITLE:", i[1])
-            print("DEPT:", i[2])
-            print("START_TIME:", i[3])
-            print("END_TIME:", i[4])
-            print("DAYS_OF_WEEK:", i[5])
-            print("SEMESTER:", i[6])
-            print("YEAR:", i[7])
-            print("CREDITS:", i[8])
-            print("\n")
+    try:
+        cur.execute("SELECT * FROM COURSES, SCHEDULE, STUDENT WHERE STUDENT.ID = SCHEDULE.STUDENT_ID AND COURSES.CRN = SCHEDULE.COURSE_ID AND ID = '{}'".format(student_id))
+        courses = cur.fetchall()
+        if (len(courses) == 0):
+            print("No Courses added!")
+        else:
+            for i in courses:
+                print("\n")
+                print("CRN:", i[0])
+                print("TITLE:", i[1])
+                print("DEPT:", i[2])
+                print("START_TIME:", i[3])
+                print("END_TIME:", i[4])
+                print("DAYS_OF_WEEK:", i[5])
+                print("SEMESTER:", i[6])
+                print("YEAR:", i[7])
+                print("CREDITS:", i[8])
+                print("INSTRUCTOR:", i[9])
+                print("\n")
+    except Error as e:
+        print(e)
         
+#print all students in class
+#def assemble_roster():
+    
+def print_instructor_schedule(conn, name):
+    cur = conn.cursor()
+    try:
+        print("SELECT INSTRUCTOR.NAME, INSTRUCTOR.SURNAME, COURSES.TITLE FROM INSTRUCTOR INNER JOIN COURSES ON INSTRUCTOR.DEPT = COURSES.DEPT")
+        cur.execute("SELECT COURSES.TITLE FROM INSTRUCTOR INNER JOIN COURSES ON INSTRUCTOR.DEPT = COURSES.DEPT WHERE INSTRUCTOR.NAME = '{}'".format(name))
+        fetch = cur.fetchall()
+        print(fetch)
+    except Error as e:
+        print(e)
+        
+#assign class to instructor based off department
 
 def add_course_to_system(conn):
     #getting list of attributes in COURSES table
@@ -286,9 +283,8 @@ def add_course_to_system(conn):
         print(response)
         i += 1
     insert_row(conn, "COURSES", tuple(courses_attributes[0:9]), tuple(response))
-    conn.commit()
 
-def remove_course_from_system(conn, course_crn):
+def remove_course_from_system(conn):
     cur = conn.cursor()
     crn_list = []
     cur = conn.cursor()
@@ -298,24 +294,30 @@ def remove_course_from_system(conn, course_crn):
 
     crn = 1
     while (crn != '0'):
-        crn = input("What course crn would you like to remove? (Enter 0 to exit): ")
+        crn = input("What course would you like to remove? (Enter 0 to exit): ")
         if (crn in crn_list):
+            print("DELETE FROM COURSES WHERE CRN = '{}'".format(crn))
             cur.execute("DELETE FROM COURSES WHERE CRN = '{}'".format(crn))
-            conn.commit()
         elif(crn == '0'):
             break
         else:
             print("Invalid CRN")
+
+def remove_course_from_schedule(conn, student_id, course_crn):
+    cur = conn.cursor()
+    try:
+        print("DELETE FROM SCHEDULE WHERE STUDENT_ID = '{}' AND COURSE_ID = '{}'".format(student_id, course_crn))
+        cur.execute("DELETE FROM SCHEDULE WHERE STUDENT_ID = '{}' AND COURSE_ID = '{}'".format(student_id, course_crn))
+    except Error as e:
+        print(e)
 
 def remove_student(conn, student_id):
     cur = conn.cursor()
     try:
         print("DELETE FROM STUDENT WHERE ID = '{}'".format(student_id))
         cur.execute("DELETE FROM STUDENT WHERE ID = '{}'".format(student_id))
-        conn.commit()
     except Error as e:
         print(e)
-
 def search_courses(conn):
     #gets a set of all possible departments in the list
         dept_list = {}
@@ -370,7 +372,7 @@ def search_courses(conn):
                 print("Invalid Option! Enter a department name or one of the options!\n")
 def print_course_roster(conn):
     cur = conn.cursor()
-    crn = input("Please enter the course ID you would like to view the roster for: ")
+    crn = input("Please enter the course ID you would like to search: ")
     cur.execute("SELECT SCHEDULE.STUDENT_ID FROM SCHEDULE WHERE COURSE_ID = '{}'".format(crn.upper()))
     course_roster = cur.fetchall()
     print(course_roster)
@@ -394,20 +396,22 @@ def add_user(conn):
         for i in get_attributes(conn, table):
             answer.append(input(i + "?: "))
         insert_row(conn, table, get_attributes(conn, table), tuple(answer))
-        conn.commit()
 
 def remove_user(conn):
-    cur = conn.cursor()
-    id = input("Please enter ID number to remove: ")
-
-    tables = get_table_names(conn)
-    for table in [tables[0], tables[2], tables[5]]: #searching only student, instructor, and admin table
-        cur.execute("SELECT * FROM {} WHERE ID = '{}'".format(table, id.upper(), id.lower()))
-        user_info = cur.fetchall()
-    
-    if (user_info):
+    while (response != 0):
+        print("Would you like to remove 1) Student 2) Instructor 3) Admin 0) Exit")
+        response = input("Input: ")
+        if (response == '1'):
+            table = "STUDENT"
+        elif (response == '2'):
+            table = "INSTRUCTOR"
+        elif (response == '3'):
+            table = "ADMIN"
+        elif (response == '0'):
+            break
+        else:
+            print("Invalid Response!")
+            continue
+        id = input("Please enter ID number to remove: ")
         remove_row(conn, table, "ID", id)
-    else:
-        print("No User Found!")
-    conn.commit()
         

@@ -4,7 +4,6 @@ from Admin import Admin
 from database_functions import *
 
 conn = create_connection('assignment_5_base.db')
-cur = conn.cursor()
 
 #---------------------------------LOGIN BLOCK----------------------------------------------#
 #User inputs ID/username
@@ -14,13 +13,15 @@ while True:
     id = input("Enter your username or ID (including W00): ")
     password = input("Enter your password: ")
 
+    cur = conn.cursor()
 
-    #searching through tables for user
+    flag = 0
     tables = get_table_names(conn)
+
     for table in [tables[0], tables[2], tables[5]]: #searching only student, instructor, and admin table
         cur.execute("SELECT * FROM {} WHERE ID = '{}' OR EMAIL = '{}';".format(table, id.upper(), id.lower()))
         user_info = cur.fetchall()
-        if (user_info): #found user in database
+        if (len(user_info) > 0): #found user in database
             break
 
     if (user_info): #if a user was found
@@ -37,63 +38,42 @@ while True:
             elif (table == "ADMIN"):
                 user = Admin(user_info[0][0], user_info[0][1], user_info[0][2], user_info[0][3], user_info[0][4], user_info[0][5])
             break
-        else:
-            print("Incorrect Password")
     else:
-        print("Invalid User!")
+        print("Invalid Credentials! Please Try Again.")
         continue
 
 #-----------------------------------------MAIN CHOICES---------------------------------------------#
 if (type(user)==Student):
     choice = 111
-    while (choice != '0'):
-        print(
-"""
-What would you like to do:
-1) Search Courses               2) Add Course to Schedule
-3) Remove Course from Schedule  4) Print Schedule
-5) Check For Conflicts          0) Exit 
-""")
-        choice = input("Input: ")
-
-        if (choice == '1'):
-            user.search_course(conn)
-        elif (choice == '2'):
+    while choice != 10:
+        choice = input("Would you like to add course to schedule (0), remove course from schedule (1), print schedule (2), or exit (10): ")
+        choice = int(choice)
+        if choice == 0:
             course_id = input("Enter course ID: ")
             user.add_course(conn, course_id)
-        elif (choice == '3'):
+        elif choice == 1:
             course_id = input("Enter course ID: ")
             user.drop_course(conn, course_id)
-        elif (choice == '4'):
+        elif choice == 2:
             user.print_schedule(conn)
-        elif (choice == '5'):
-            print("WIP")
-        elif choice == '0':
+        elif choice == 10:
             print("Exiting")
-            break
         else:
-            print("Input invalid")
+            print("User input invalid")
 
 elif (type(user)==Instructor):
     choice = 111
-    while (choice != '0'):
-        print(
-"""
-What would you like to do:
-1) Search Courses   2)Print Schedule
-3) Search Roster    0)Exit
-"""
-        )
+    while choice != 10:
         choice = input("Would you like to print schedule(0),  print classlist (1), search courses (2), or exit (10): ")
-        if (choice == '1'):
-            user.search_course(conn)
-        elif (choice == '2'):
+        choice = int(choice)
+        if choice == 0:
             user.print_schedule(conn)
-        elif (choice == '3'):
+        elif choice == 1:
             user.print_classlist(conn)
-        elif (choice == '0'):
+        elif choice == 2:
+            user.search_course(conn)
+        elif choice == 10:
             print("Exiting")
-            break
         else:
             print("User input invalid")
     
@@ -107,21 +87,25 @@ elif (type(user)==Admin):
         search course (7), or exit (10): """)
         choice = int(choice)
         if choice == 0:
-            user.add_course()
+            user.add_course(conn)
         elif choice == 1:
-            user.remove_course()
+            user.remove_course(conn)
         elif choice == 2:
-            user.add_user()
+            user.add_user(conn)
         elif choice == 3:
-            user.remove_user()
+            user.remove_user(conn)
         elif choice == 4:
-            user.add_student_to_course()
+            student_id = input("Enter the student ID: ")
+            course_id = input("Enter the course ID: ")
+            user.add_student_to_course(conn, student_id, course_id)
         elif choice == 5:
-            user.remove_student_from_course()
+            student_id = input("Enter the student ID: ")
+            course_id = input("Enter the course ID: ")
+            user.remove_student_from_course(conn, student_id, course_id)
         elif choice == 6:
-            user.print_roster()
+            user.print_roster(conn)
         elif choice == 7:
-            user.search_course()
+            user.search_course(conn)
         elif choice == 10:
             print("Exiting")
         else:
