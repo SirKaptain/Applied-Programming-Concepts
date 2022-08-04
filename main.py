@@ -37,14 +37,16 @@ while True:
             elif (table == "ADMIN"):
                 user = Admin(user_info[0][0], user_info[0][1], user_info[0][2], user_info[0][3], user_info[0][4], user_info[0][5])
             break
+        else:
+            print("Incorrect Password")
     else:
-        print("Invalid Credentials! Please Try Again.")
+        print("Invalid User!")
         continue
 
 #-----------------------------------------MAIN CHOICES---------------------------------------------#
 if (type(user)==Student):
     choice = 111
-    while choice != 10:
+    while (choice != '0'):
         print(
 """
 What would you like to do:
@@ -53,6 +55,7 @@ What would you like to do:
 0) Exit 
 """)
         choice = input("Input: ")
+        
         if (choice == '1'):
             user.search_course(conn)
         elif (choice == '2'):
@@ -63,8 +66,9 @@ What would you like to do:
             user.drop_course(conn, course_id)
         elif (choice == '4'):
             user.print_schedule(conn)
-        elif choice == 00:
+        elif choice == '0':
             print("Exiting")
+            break
         else:
             print("Input invalid")
 

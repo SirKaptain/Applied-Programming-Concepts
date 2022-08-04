@@ -151,28 +151,25 @@ def remove_course_from_schedule(conn, student_id, course_crn ):
 
 def print_student_schedule(conn, student_id):
     cur = conn.cursor()
-    try:
-        cur.execute("SELECT * FROM COURSES, SCHEDULE, STUDENT WHERE STUDENT.ID = SCHEDULE.STUDENT_ID AND COURSES.CRN = SCHEDULE.COURSE_ID AND ID = '{}'".format(student_id))
-        courses = cur.fetchall()
-        if (len(courses) == 0):
-            print("No Courses in Schedule!")
-        else:
-            for i in courses:
-                print("\n")
-                print("CRN:", i[0])
-                print("TITLE:", i[1])
-                print("DEPT:", i[2])
-                print("START_TIME:", i[3])
-                print("END_TIME:", i[4])
-                print("DAYS_OF_WEEK:", i[5])
-                print("SEMESTER:", i[6])
-                print("YEAR:", i[7])
-                print("CREDITS:", i[8])
-                print("INSTRUCTOR:", i[9])
-                print("\n")
-    except Error as e:
-        print(e)
-        
+    cur.execute("SELECT * FROM COURSES, SCHEDULE, STUDENT WHERE STUDENT.ID = SCHEDULE.STUDENT_ID AND COURSES.CRN = SCHEDULE.COURSE_ID AND ID = '{}'".format(student_id))
+    courses = cur.fetchall()
+    if (len(courses) == 0):
+        print("No Courses in Schedule!")
+    else:
+        for i in courses:
+            print("\n")
+            print("CRN:", i[0])
+            print("TITLE:", i[1])
+            print("DEPT:", i[2])
+            print("START_TIME:", i[3])
+            print("END_TIME:", i[4])
+            print("DAYS_OF_WEEK:", i[5])
+            print("SEMESTER:", i[6])
+            print("YEAR:", i[7])
+            print("CREDITS:", i[8])
+            print("INSTRUCTOR:", i[9])
+            print("\n")
+
 #print all students in class
 #def assemble_roster():
     
