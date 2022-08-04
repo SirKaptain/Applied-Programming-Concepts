@@ -115,15 +115,6 @@ def get_attributes(conn, table):
         attributes.append(i[1])
     return attributes
 
-def find_matching_instructors(conn):
-    cur = conn.cursor()
-    try:
-        print("SELECT INSTRUCTOR.NAME, INSTRUCTOR.SURNAME, COURSES.TITLE FROM INSTRUCTOR INNER JOIN COURSES ON INSTRUCTOR.DEPT = COURSES.DEPT")
-        cur.execute("SELECT INSTRUCTOR.NAME, INSTRUCTOR.SURNAME, COURSES.TITLE FROM INSTRUCTOR INNER JOIN COURSES ON INSTRUCTOR.DEPT = COURSES.DEPT")
-        fetch = cur.fetchall()
-        print(fetch)
-    except Error as e:
-        print(e)
 
 def add_course_to_schedule(conn, student_id, course_crn):
     cur = conn.cursor()
@@ -151,13 +142,14 @@ def remove_course_from_schedule(conn, student_id, course_crn ):
 
 def print_student_schedule(conn, student_id):
     cur = conn.cursor()
-    cur.execute("SELECT * FROM COURSES, SCHEDULE, STUDENT WHERE STUDENT.ID = SCHEDULE.STUDENT_ID AND COURSES.CRN = SCHEDULE.COURSE_ID AND ID = '{}'".format(student_id))
+    cur.execute("SELECT * FROM COURSES, SCHEDULE, STUDENT, INSTRUCTOR WHERE STUDENT.ID = SCHEDULE.STUDENT_ID AND COURSES.CRN = SCHEDULE.COURSE_ID AND STUDENT.ID = '{}'".format(student_id))
     courses = cur.fetchall()
     if (len(courses) == 0):
         print("No Courses in Schedule!")
     else:
         for i in courses:
             print("\n")
+            print(i)
             print("CRN:", i[0])
             print("TITLE:", i[1])
             print("DEPT:", i[2])
@@ -167,11 +159,8 @@ def print_student_schedule(conn, student_id):
             print("SEMESTER:", i[6])
             print("YEAR:", i[7])
             print("CREDITS:", i[8])
-            print("INSTRUCTOR:", i[9])
+            print("INSTRUCTOR:", i[19] + ' ' + i[20])
             print("\n")
-
-#print all students in class
-#def assemble_roster():
     
 def print_instructor_schedule(conn, name):
     cur = conn.cursor()
@@ -183,7 +172,6 @@ def print_instructor_schedule(conn, name):
     except Error as e:
         print(e)
         
-#assign class to instructor based off department
 
 def add_course_to_system(conn):
     #getting list of attributes in COURSES table

@@ -20,7 +20,7 @@ while True:
     for table in [tables[0], tables[2], tables[5]]: #searching only student, instructor, and admin table
         cur.execute("SELECT * FROM {} WHERE ID = '{}' OR EMAIL = '{}';".format(table, id.upper(), id.lower()))
         user_info = cur.fetchall()
-        if (len(user_info) > 0): #found user in database
+        if (user_info): #found user in database
             break
 
     if (user_info): #if a user was found
@@ -55,7 +55,7 @@ What would you like to do:
 0) Exit 
 """)
         choice = input("Input: ")
-        
+
         if (choice == '1'):
             user.search_course(conn)
         elif (choice == '2'):

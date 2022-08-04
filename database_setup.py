@@ -67,8 +67,11 @@ def populate_login(conn):
     for row in df.itertuples():
         cur.execute("INSERT INTO LOGIN (ID, PASSWORD) VALUES ('{}','{}')".format(row.ID, row.PASSWORD))
 
-#def populate_course_instructors(conn):
-
+def populate_course_instructors(conn):
+    cur = conn.cursor()
+    cur.execute("UPDATE COURSES SET INSTRUCTOR_ID = (SELECT INSTRUCTOR.ID FROM INSTRUCTOR WHERE INSTRUCTOR.DEPT = COURSES.DEPT ORDER BY RANDOM() LIMIT 1)")
+    conn.commit()
+    
 
 remove_all_tables(conn)
 setup_all_tables(conn)
@@ -77,5 +80,6 @@ populate_instructors(conn)
 populate_admins(conn)
 populate_courses(conn)
 populate_login(conn)
+populate_course_instructors(conn)
 conn.commit()
 conn.close()
