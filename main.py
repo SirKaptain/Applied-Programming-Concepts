@@ -50,9 +50,9 @@ if (type(user)==Student):
         print(
 """
 What would you like to do:
-1) Search Courses               2)Add Course to Schedule
+1) Search Courses               2) Add Course to Schedule
 3) Remove Course from Schedule  4) Print Schedule
-0) Exit 
+5) Check For Conflicts          0) Exit 
 """)
         choice = input("Input: ")
 
@@ -66,6 +66,8 @@ What would you like to do:
             user.drop_course(conn, course_id)
         elif (choice == '4'):
             user.print_schedule(conn)
+        elif (choice == '5'):
+            print("WIP")
         elif choice == '0':
             print("Exiting")
             break
@@ -74,17 +76,24 @@ What would you like to do:
 
 elif (type(user)==Instructor):
     choice = 111
-    while choice != 10:
+    while (choice != '0'):
+        print(
+"""
+What would you like to do:
+1) Search Courses   2)Print Schedule
+3) Search Roster    0)Exit
+"""
+        )
         choice = input("Would you like to print schedule(0),  print classlist (1), search courses (2), or exit (10): ")
-        choice = int(choice)
-        if choice == 0:
-            user.print_schedule(conn)
-        elif choice == 1:
-            user.print_classlist(conn)
-        elif choice == 2:
+        if (choice == '1'):
             user.search_course(conn)
-        elif choice == 10:
+        elif (choice == '2'):
+            user.print_schedule(conn)
+        elif (choice == '3'):
+            user.print_classlist(conn)
+        elif (choice == '0'):
             print("Exiting")
+            break
         else:
             print("User input invalid")
     

@@ -142,14 +142,13 @@ def remove_course_from_schedule(conn, student_id, course_crn ):
 
 def print_student_schedule(conn, student_id):
     cur = conn.cursor()
-    cur.execute("SELECT * FROM COURSES, SCHEDULE, STUDENT, INSTRUCTOR WHERE STUDENT.ID = SCHEDULE.STUDENT_ID AND COURSES.CRN = SCHEDULE.COURSE_ID AND STUDENT.ID = '{}'".format(student_id))
+    cur.execute("SELECT * FROM COURSES, SCHEDULE, STUDENT, INSTRUCTOR WHERE STUDENT.ID = SCHEDULE.STUDENT_ID AND COURSES.CRN = SCHEDULE.COURSE_ID AND INSTRUCTOR.ID = COURSES.INSTRUCTOR_ID AND STUDENT.ID = '{}'".format(student_id))
     courses = cur.fetchall()
     if (len(courses) == 0):
         print("No Courses in Schedule!")
     else:
         for i in courses:
             print("\n")
-            print(i)
             print("CRN:", i[0])
             print("TITLE:", i[1])
             print("DEPT:", i[2])
@@ -162,15 +161,26 @@ def print_student_schedule(conn, student_id):
             print("INSTRUCTOR:", i[19] + ' ' + i[20])
             print("\n")
     
-def print_instructor_schedule(conn, name):
+def print_instructor_schedule(conn, instructor_id):
     cur = conn.cursor()
-    try:
-        print("SELECT INSTRUCTOR.NAME, INSTRUCTOR.SURNAME, COURSES.TITLE FROM INSTRUCTOR INNER JOIN COURSES ON INSTRUCTOR.DEPT = COURSES.DEPT")
-        cur.execute("SELECT COURSES.TITLE FROM INSTRUCTOR INNER JOIN COURSES ON INSTRUCTOR.DEPT = COURSES.DEPT WHERE INSTRUCTOR.NAME = '{}'".format(name))
-        fetch = cur.fetchall()
-        print(fetch)
-    except Error as e:
-        print(e)
+    cur.execute("SELECT * FROM COURSES WHERE COURSES.INSTRUCTOR_ID = '{}'".format(instructor_id))
+    courses = cur.fetchall()
+    print(courses)
+    if (len(courses) == 0):
+        print("No Courses in Schedule!")
+    else:
+        for i in courses:
+            print("\n")
+            print("CRN:", i[0])
+            print("TITLE:", i[1])
+            print("DEPT:", i[2])
+            print("START_TIME:", i[3])
+            print("END_TIME:", i[4])
+            print("DAYS_OF_WEEK:", i[5])
+            print("SEMESTER:", i[6])
+            print("YEAR:", i[7])
+            print("CREDITS:", i[8])
+            print("\n")
         
 
 def add_course_to_system(conn):
@@ -360,7 +370,7 @@ def search_courses(conn):
                 print("Invalid Option! Enter a department name or one of the options!\n")
 def print_course_roster(conn):
     cur = conn.cursor()
-    crn = input("Please enter the course ID you would like to search: ")
+    crn = input("Please enter the course ID you would like to view the roster for: ")
     cur.execute("SELECT SCHEDULE.STUDENT_ID FROM SCHEDULE WHERE COURSE_ID = '{}'".format(crn.upper()))
     course_roster = cur.fetchall()
     print(course_roster)
