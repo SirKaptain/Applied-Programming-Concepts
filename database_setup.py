@@ -67,8 +67,8 @@ def populate_login(conn):
     for row in df.itertuples():
         cur.execute("INSERT INTO LOGIN (ID, PASSWORD) VALUES ('{}','{}')".format(row.ID, row.PASSWORD))
 
-def populate_course_instructors(conn):
-    
+#def populate_course_instructors(conn):
+
 
 remove_all_tables(conn)
 setup_all_tables(conn)

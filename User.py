@@ -20,7 +20,7 @@ class User:
         print(self.last_name)
         print(self.id)
 
-    def search_course(conn):
+    def search_course(self, conn):
         search_courses(conn)
         
     def edit_info(self):

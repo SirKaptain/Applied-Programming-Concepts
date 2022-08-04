@@ -4,6 +4,7 @@ from Admin import Admin
 from database_functions import *
 
 conn = create_connection('assignment_5_base.db')
+cur = conn.cursor()
 
 #---------------------------------LOGIN BLOCK----------------------------------------------#
 #User inputs ID/username
@@ -13,11 +14,9 @@ while True:
     id = input("Enter your username or ID (including W00): ")
     password = input("Enter your password: ")
 
-    cur = conn.cursor()
 
-    flag = 0
+    #searching through tables for user
     tables = get_table_names(conn)
-
     for table in [tables[0], tables[2], tables[5]]: #searching only student, instructor, and admin table
         cur.execute("SELECT * FROM {} WHERE ID = '{}' OR EMAIL = '{}';".format(table, id.upper(), id.lower()))
         user_info = cur.fetchall()
@@ -48,20 +47,28 @@ while True:
 if (type(user)==Student):
     choice = 111
     while choice != 10:
-        choice = input("Would you like to add course to schedule (0), remove course from schedule (1), print schedule (2), or exit (10): ")
-        choice = int(choice)
-        if choice == 0:
+        print(
+"""
+What would you like to do:
+1) Search Courses               2)Add Course to Schedule
+3) Remove Course from Schedule  4) Print Schedule
+0) Exit 
+""")
+        choice = input("Input: ")
+        if (choice == '1'):
+            user.search_course(conn)
+        elif (choice == '2'):
             course_id = input("Enter course ID: ")
             user.add_course(conn, course_id)
-        elif choice == 1:
+        elif (choice == '3'):
             course_id = input("Enter course ID: ")
             user.drop_course(conn, course_id)
-        elif choice == 2:
+        elif (choice == '4'):
             user.print_schedule(conn)
-        elif choice == 10:
+        elif choice == 00:
             print("Exiting")
         else:
-            print("User input invalid")
+            print("Input invalid")
 
 elif (type(user)==Instructor):
     choice = 111

@@ -127,20 +127,27 @@ def find_matching_instructors(conn):
 
 def add_course_to_schedule(conn, student_id, course_crn):
     cur = conn.cursor()
-    try:
-        print("INSERT INTO SCHEDULE('STUDENT_ID', 'COURSE_ID') VALUES ('{}', '{}')".format(student_id, course_crn))
+    cur.execute("SELECT * FROM COURSES WHERE COURSES.CRN = '{}'".format(course_crn))
+    if (cur.fetchall()):
         cur.execute("INSERT INTO SCHEDULE('STUDENT_ID', 'COURSE_ID') VALUES ('{}', '{}')".format(student_id, course_crn))
         conn.commit()
-    except Error as e:
-        print(e)
+        cur.execute("SELECT COURSES.TITLE FROM COURSES WHERE COURSES.CRN = '{}'".format(course_crn))
+        print("Added: " + (cur.fetchall())[0][0] + " to your schedule!")
+    else:
+        print("Invalid CRN!")
+
 def remove_course_from_schedule(conn, student_id, course_crn ):
     cur = conn.cursor()
-    try:
-        print("DELETE FROM SCHEDULE WHERE STUDENT_ID = '{}' AND COURSE_ID = '{}'".format(student_id, course_crn))
+
+    #check if user has course in their schedule
+    cur.execute("SELECT * FROM SCHEDULE WHERE STUDENT_ID = '{}' AND COURSE_ID = '{}'".format(student_id, course_crn))
+    if (cur.fetchall()):
+        cur.execute("SELECT COURSES.TITLE FROM COURSES WHERE COURSES.CRN = '{}'".format(course_crn)) #get couse title for nice printing
+        print("Removed: " + (cur.fetchall())[0][0] + " from schedule!")
         cur.execute("DELETE FROM SCHEDULE WHERE STUDENT_ID = '{}' AND COURSE_ID = '{}'".format(student_id, course_crn))
         conn.commit()
-    except Error as e:
-        print(e)
+    else:
+        print("No such course in your schedule!")
 
 def print_student_schedule(conn, student_id):
     cur = conn.cursor()
@@ -148,7 +155,7 @@ def print_student_schedule(conn, student_id):
         cur.execute("SELECT * FROM COURSES, SCHEDULE, STUDENT WHERE STUDENT.ID = SCHEDULE.STUDENT_ID AND COURSES.CRN = SCHEDULE.COURSE_ID AND ID = '{}'".format(student_id))
         courses = cur.fetchall()
         if (len(courses) == 0):
-            print("No Courses added!")
+            print("No Courses in Schedule!")
         else:
             for i in courses:
                 print("\n")
@@ -305,15 +312,6 @@ def remove_course_from_system(conn, course_crn):
         else:
             print("Invalid CRN")
 
-def remove_course_from_schedule(conn, student_id, course_crn):
-    cur = conn.cursor()
-    try:
-        print("DELETE FROM SCHEDULE WHERE STUDENT_ID = '{}' AND COURSE_ID = '{}'".format(student_id, course_crn))
-        cur.execute("DELETE FROM SCHEDULE WHERE STUDENT_ID = '{}' AND COURSE_ID = '{}'".format(student_id, course_crn))
-        conn.commit()
-    except Error as e:
-        print(e)
-
 def remove_student(conn, student_id):
     cur = conn.cursor()
     try:
@@ -322,6 +320,7 @@ def remove_student(conn, student_id):
         conn.commit()
     except Error as e:
         print(e)
+
 def search_courses(conn):
     #gets a set of all possible departments in the list
         dept_list = {}
@@ -403,21 +402,17 @@ def add_user(conn):
         conn.commit()
 
 def remove_user(conn):
-    while (response != 0):
-        print("Would you like to remove 1) Student 2) Instructor 3) Admin 0) Exit")
-        response = input("Input: ")
-        if (response == '1'):
-            table = "STUDENT"
-        elif (response == '2'):
-            table = "INSTRUCTOR"
-        elif (response == '3'):
-            table = "ADMIN"
-        elif (response == '0'):
-            break
-        else:
-            print("Invalid Response!")
-            continue
-        id = input("Please enter ID number to remove: ")
+    cur = conn.cursor()
+    id = input("Please enter ID number to remove: ")
+
+    tables = get_table_names(conn)
+    for table in [tables[0], tables[2], tables[5]]: #searching only student, instructor, and admin table
+        cur.execute("SELECT * FROM {} WHERE ID = '{}'".format(table, id.upper(), id.lower()))
+        user_info = cur.fetchall()
+    
+    if (user_info):
         remove_row(conn, table, "ID", id)
-        conn.commit()
+    else:
+        print("No User Found!")
+    conn.commit()
         
