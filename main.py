@@ -46,32 +46,60 @@ while True:
 user.show_info()
 
 if (type(user)==Student):
-    choice = input("Would you like to add course to schedule (0), remove course from schedule (1), print schedule (2), or search a course (3)")
-    choice = int(choice)
-    if choice == 0:
-        course_id = input("Enter course ID: ")
-        user.add_course(conn, course_id)
-    elif choice == 1:
-        course_id = input("Enter course ID: ")
-        user.drop_course(conn, course_id)
-    elif choice == 2:
-        user.print_schedule()
-    elif choice == 3:
-        user.search_course()
+    choice = 111
+    while choice != 10:
+        choice = input("Would you like to add course to schedule (0), remove course from schedule (1), print schedule (2), or exit (10): ")
+        choice = int(choice)
+        if choice == 0:
+            course_id = input("Enter course ID: ")
+            user.add_course(conn, course_id)
+        elif choice == 1:
+            course_id = input("Enter course ID: ")
+            user.drop_course(conn, course_id)
+        elif choice == 2:
+            user.print_schedule(conn)
+        else:
+            print("User input invalid")
 
 elif (type(user)==Instructor):
-    choice = input("Would you like to search courses (0), or print classlist (1)")
-    if choice == 0:
-        user.search_course()
-    elif choice == 1:
-        user.print_classlist()
-
+    choice = 111
+    while choice != 10:
+        choice = input("Would you like to print schedule(0),  print classlist (1), search courses (2), or exit (10): ")
+        if choice == 0:
+            user.print_schedule(conn)
+        elif choice == 1:
+            user.print_classlist(conn)
+        elif choice == 2:
+            user.search_course(conn)
+        else:
+            print("User input invalid")
     
 elif (type(user)==Admin):
-    choice = input("Would you like to add course to system")
-    if choice == 0:
-        user.add_course_to_system()
-    elif choice == 1:
-        user.remove_course_from_system()
-    elif choice == 2:
-        user.remove_student()
+    choice = 111
+    while choice != 10:
+        choice = input("""Would you like to add course to system (0), 
+        remove course from system (1), add user to system (2), 
+        remove user from system (3),  add student to course (4), 
+        remove student from course (5), search roster (6)
+        print roster (7), search course (8), or exit (10): """)
+        if choice == 0:
+            user.add_course()
+        elif choice == 1:
+            user.remove_course()
+        elif choice == 2:
+            user.add_user()
+        elif choice == 3:
+            user.remove_user()
+        elif choice == 4:
+            user.add_student_to_course()
+        elif choice == 5:
+            user.remove_student_from_course()
+        elif choice == 6:
+            user.search_roster()
+        elif choice == 7:
+            user.print_roster()
+        elif choice == 8:
+            user.search_course()
+
+        else:
+            print("User input invalid")
