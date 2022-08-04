@@ -77,7 +77,6 @@ def get_table_names(conn):
     list = []
     cur = conn.cursor()
     try:
-        print("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name ASC;")
         cur.execute("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name ASC;")
         tables = cur.fetchall()
         for i in tables:
@@ -130,8 +129,8 @@ def remove_course_from_schedule(conn, student_id, course_crn ):
 def print_student_schedule(conn, student_id):
     cur = conn.cursor()
     try:
-        print("SELECT COURSES FROM STUDENT, COURSES, SCHEDULE WHERE STUDENT.ID = SCHEDULE.STUDENT_ID AND COURSES.CRN = SCHEDULE.COURSE_ID AND ID = '{}'".format(student_id))
-        cur.execute("SELECT COURSES FROM STUDENT, COURSES, SCHEDULE WHERE STUDENT.ID = SCHEDULE.STUDENT_ID AND COURSES.CRN = SCHEDULE.COURSE_ID AND ID = '{}'".format(student_id))
+        print("SELECT COURSE_ID FROM SCHEDULE, COURSES, STUDENT WHERE STUDENT.ID = SCHEDULE.STUDENT_ID AND COURSES.CRN = SCHEDULE.COURSE_ID AND ID = '{}'".format(student_id))
+        cur.execute("SELECT COURSE_ID FROM SCHEDULE, COURSES, STUDENT WHERE STUDENT.ID = SCHEDULE.STUDENT_ID AND COURSES.CRN = SCHEDULE.COURSE_ID AND ID = '{}'".format(student_id))
     except Error as e:
         print(e)
         
@@ -141,8 +140,8 @@ def print_student_schedule(conn, student_id):
 def print_instructor_schedule(conn, instructor_id):
     cur = conn.cursor()
     try:
-        print("SELECT COURSES FROM INSTRUCTOR, COURSES, SCHEDULE WHERE INSTRUCTOR.ID = SCHEDULE.INSTRUCTOR_ID AND COURSES.CRN = SCHEDULE.COURSE_ID AND ID = '{}'".format(instructor_id))
-        cur.execute("SELECT COURSES FROM INSTRUCTOR, COURSES, SCHEDULE WHERE INSTRUCTOR.ID = SCHEDULE.INSTRUCTOR_ID AND COURSES.CRN = SCHEDULE.COURSE_ID AND ID = '{}'".format(instructor_id))
+        print("SELECT COURSES FROM SCHEDULE, COURSES, STUDENT WHERE INSTRUCTOR.ID = SCHEDULE.INSTRUCTOR_ID AND COURSES.CRN = SCHEDULE.COURSE_ID AND ID = '{}'".format(instructor_id))
+        cur.execute("SELECT COURSES FROM SCHEDULE, COURSES, STUDENT WHERE INSTRUCTOR.ID = SCHEDULE.INSTRUCTOR_ID AND COURSES.CRN = SCHEDULE.COURSE_ID AND ID = '{}'".format(instructor_id))
     except Error as e:
         print(e)
         
