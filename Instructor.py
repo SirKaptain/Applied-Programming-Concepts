@@ -19,7 +19,7 @@ class Instructor(User):
         print(self.email)
 
     def print_schedule(self, conn):
-        print_instructor_schedule(self.id, conn)
+        print_instructor_schedule(conn, self.first_name)
     def print_classlist(self, conn):
         print_course_roster(conn)
     def search_course(self, conn):

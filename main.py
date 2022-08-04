@@ -65,6 +65,7 @@ elif (type(user)==Instructor):
     choice = 111
     while choice != 10:
         choice = input("Would you like to print schedule(0),  print classlist (1), search courses (2), or exit (10): ")
+        choice = int(choice)
         if choice == 0:
             user.print_schedule(conn)
         elif choice == 1:
@@ -79,6 +80,7 @@ elif (type(user)==Instructor):
 elif (type(user)==Admin):
     choice = 111
     while choice != 10:
+        choice = int(choice)
         choice = input("""Would you like to add course to system (0), 
         remove course from system (1), add user to system (2), 
         remove user from system (3),  add student to course (4), 
