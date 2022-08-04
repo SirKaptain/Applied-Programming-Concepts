@@ -18,9 +18,9 @@ class Instructor(User):
         print(self.dept)
         print(self.email)
 
-    def print_schedule(self):
-        self.print_instructor_schedule()
-    def print_classlist(self):
-        print("Print Classlist for Instructor!")
-    def search_course(self):
-        print("Search course for Instructor!")
+    def print_schedule(conn, instructor_id):
+        print_instructor_schedule(conn, instructor_id)
+    def print_classlist(conn):
+        print_course_roster(conn)
+    def search_course(self, conn):
+        search_courses(self, conn)
