@@ -378,16 +378,18 @@ def print_course_roster(conn):
     print(course_roster)
 
 def add_user(conn):
+    response = 1
     while (response != 0):
         print("Would you like to add 1) Student 2) Instructor 3) Admin 0) Exit")
         response = input("Input: ")
-        if (response == '1'):
+        response = int(response)
+        if (response == 1):
             table = "STUDENT"
-        elif (response == '2'):
+        elif (response == 2):
             table = "INSTRUCTOR"
-        elif (response == '3'):
+        elif (response == 3):
             table = "ADMIN"
-        elif (response == '0'):
+        elif (response == 0):
             break
         else:
             print("Invalid Response!")
@@ -398,16 +400,18 @@ def add_user(conn):
         insert_row(conn, table, get_attributes(conn, table), tuple(answer))
 
 def remove_user(conn):
+    response = 1
     while (response != 0):
         print("Would you like to remove 1) Student 2) Instructor 3) Admin 0) Exit")
         response = input("Input: ")
-        if (response == '1'):
+        response = int(response)
+        if (response == 1):
             table = "STUDENT"
-        elif (response == '2'):
+        elif (response == 2):
             table = "INSTRUCTOR"
-        elif (response == '3'):
+        elif (response == 3):
             table = "ADMIN"
-        elif (response == '0'):
+        elif (response == 0):
             break
         else:
             print("Invalid Response!")
