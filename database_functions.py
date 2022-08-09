@@ -114,52 +114,6 @@ def get_attributes(conn, table):
     for i in get_table_info(conn, table):
         attributes.append(i[1])
     return attributes
-
-
-def add_course_to_schedule(conn, student_id, course_crn):
-    cur = conn.cursor()
-    cur.execute("SELECT * FROM COURSES WHERE COURSES.CRN = '{}'".format(course_crn))
-    if (cur.fetchall()):
-        cur.execute("INSERT INTO SCHEDULE('STUDENT_ID', 'COURSE_ID') VALUES ('{}', '{}')".format(student_id, course_crn))
-        conn.commit()
-        cur.execute("SELECT COURSES.TITLE FROM COURSES WHERE COURSES.CRN = '{}'".format(course_crn))
-        print("Added: " + (cur.fetchall())[0][0] + " to your schedule!")
-    else:
-        print("Invalid CRN!")
-
-def remove_course_from_schedule(conn, student_id, course_crn ):
-    cur = conn.cursor()
-
-    #check if user has course in their schedule
-    cur.execute("SELECT * FROM SCHEDULE WHERE STUDENT_ID = '{}' AND COURSE_ID = '{}'".format(student_id, course_crn))
-    if (cur.fetchall()):
-        cur.execute("SELECT COURSES.TITLE FROM COURSES WHERE COURSES.CRN = '{}'".format(course_crn)) #get couse title for nice printing
-        print("Removed: " + (cur.fetchall())[0][0] + " from schedule!")
-        cur.execute("DELETE FROM SCHEDULE WHERE STUDENT_ID = '{}' AND COURSE_ID = '{}'".format(student_id, course_crn))
-        conn.commit()
-    else:
-        print("No such course in your schedule!")
-
-def print_student_schedule(conn, student_id):
-    cur = conn.cursor()
-    cur.execute("SELECT * FROM COURSES, SCHEDULE, STUDENT, INSTRUCTOR WHERE STUDENT.ID = SCHEDULE.STUDENT_ID AND COURSES.CRN = SCHEDULE.COURSE_ID AND INSTRUCTOR.ID = COURSES.INSTRUCTOR_ID AND STUDENT.ID = '{}'".format(student_id))
-    courses = cur.fetchall()
-    if (len(courses) == 0):
-        print("No Courses in Schedule!")
-    else:
-        for i in courses:
-            print("\n")
-            print("CRN:", i[0])
-            print("TITLE:", i[1])
-            print("DEPT:", i[2])
-            print("START_TIME:", i[3])
-            print("END_TIME:", i[4])
-            print("DAYS_OF_WEEK:", i[5])
-            print("SEMESTER:", i[6])
-            print("YEAR:", i[7])
-            print("CREDITS:", i[8])
-            print("INSTRUCTOR:", i[19] + ' ' + i[20])
-            print("\n")
     
 def print_instructor_schedule(conn, instructor_id):
     cur = conn.cursor()
