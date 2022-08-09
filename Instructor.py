@@ -19,8 +19,29 @@ class Instructor(User):
         print(self.email)
 
     def print_schedule(self, conn):
-        print_instructor_schedule(conn, self.id)
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM COURSES WHERE COURSES.INSTRUCTOR_ID = '{}'".format(self.id))
+        courses = cur.fetchall()
+        print(courses)
+        if (len(courses) == 0):
+            print("No Courses in Schedule!")
+        else:
+            for i in courses:
+                print("\n")
+                print("CRN:", i[0])
+                print("TITLE:", i[1])
+                print("DEPT:", i[2])
+                print("START_TIME:", i[3])
+                print("END_TIME:", i[4])
+                print("DAYS_OF_WEEK:", i[5])
+                print("SEMESTER:", i[6])
+                print("YEAR:", i[7])
+                print("CREDITS:", i[8])
+                print("\n")
+
     def print_classlist(self, conn):
-        print_course_roster(conn)
-    def search_course(self, conn):
-        search_courses(conn)
+        cur = conn.cursor()
+        crn = input("Please enter the course ID you would like to view the roster for: ")
+        cur.execute("SELECT SCHEDULE.STUDENT_ID FROM SCHEDULE WHERE COURSE_ID = '{}'".format(crn.upper()))
+        course_roster = cur.fetchall()
+        print(course_roster)

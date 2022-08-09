@@ -25,7 +25,6 @@ class Student(User):
             #check for conflicts
             cur.execute("SELECT COURSES.START_TIME, COURSES.END_TIME, COURSES.DAYS_OF_WEEK, COURSES.SEMESTER, COURSES.YEAR FROM COURSES, SCHEDULE, STUDENT WHERE STUDENT.ID = SCHEDULE.STUDENT_ID AND COURSES.CRN = SCHEDULE.COURSE_ID AND STUDENT.ID = '{}'".format(self.id))
             schedule_info = cur.fetchall()
-            print(schedule_info)
             format = "%I:%M %p"
             flag = 0
             for i in schedule_info:

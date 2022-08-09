@@ -84,7 +84,7 @@ What would you like to do:
 3) Search Roster    0)Exit
 """
         )
-        choice = input("Would you like to print schedule(0),  print classlist (1), search courses (2), or exit (10): ")
+        choice = input("Input: ")
         if (choice == '1'):
             user.search_course(conn)
         elif (choice == '2'):
@@ -99,31 +99,37 @@ What would you like to do:
     
 elif (type(user)==Admin):
     choice = 111
-    while choice != 10:
-        choice = input("""Would you like to add course to system (0), 
-        remove course from system (1), add user to system (2), 
-        remove user from system (3),  add student to course (4), 
-        remove student from course (5), print roster (6), 
-        search course (7), or exit (10): """)
-        choice = int(choice)
-        if choice == 0:
+    while (choice != 0):
+        print(
+"""
+What would you like to do:
+1) Add Course to System     2) Remove Course from System
+3) Add User                 4) Remove User
+5) Add Student to Course    5) Remove Student from Course
+7) Print Roster             8) Search Course 
+0) Exit       
+"""
+        )
+        choice = input("Input: ")
+        if (choice == '1'):
             user.add_course()
-        elif choice == 1:
+        elif (choice == '2'):
             user.remove_course()
-        elif choice == 2:
+        elif (choice == '3'):
             user.add_user()
-        elif choice == 3:
+        elif (choice == '4'):
             user.remove_user()
-        elif choice == 4:
+        elif (choice == '5'):
             user.add_student_to_course()
-        elif choice == 5:
+        elif (choice == '6'):
             user.remove_student_from_course()
-        elif choice == 6:
+        elif (choice == '7'):
             user.print_roster()
-        elif choice == 7:
+        elif (choice == '8'):
             user.search_course()
-        elif choice == 10:
+        elif (choice == '0'):
             print("Exiting")
+            break
         else:
             print("User input invalid")
 conn.commit()
