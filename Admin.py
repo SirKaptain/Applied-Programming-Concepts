@@ -122,7 +122,7 @@ class Admin(User):
         insert_row(conn, "COURSES", tuple(courses_attributes[0:9]), tuple(response))
         conn.commit()
 
-    def remove_course(self, conn, course_crn):
+    def remove_course(self, conn):
         cur = conn.cursor()
         crn_list = []
         cur = conn.cursor()
@@ -177,15 +177,21 @@ class Admin(User):
             print("No User Found!")
         conn.commit()
 
-    def add_student_to_course(self, conn, student_id, course_crn):
+    def add_student_to_course(self, conn):
         cur = conn.cursor()
+        student_id = input("Enter the Student ID: ")
+        cur.execute("SELECT * FROM STUDENT WHERE STUDENT.ID = '{}'".format(student_id))
+        student_info = cur.fetchall()
+        course_crn = input("Enter the Course CRN: ")
         cur.execute("SELECT * FROM COURSES WHERE COURSES.CRN = '{}'".format(course_crn))
         course_info = cur.fetchall()
-        if (course_info): #if found a course with correct crn
+        if (student_info and course_info): #if found a course with correct crn and student with correct ID
             cur.execute("INSERT INTO SCHEDULE('STUDENT_ID', 'COURSE_ID') VALUES ('{}', '{}')".format(student_id, course_crn))
             conn.commit()
             cur.execute("SELECT COURSES.TITLE FROM COURSES WHERE COURSES.CRN = '{}'".format(course_crn))
             print("Added: " + (cur.fetchall())[0][0] + " to schedule!")
+        else:
+            print("Invalid student ID or course CRN")
 
     def remove_student_from_course(self, conn, student_id, course_crn):
         cur = conn.cursor()
@@ -202,6 +208,9 @@ class Admin(User):
     def print_roster(self, conn):
         cur = conn.cursor()
         crn = input("Please enter the course ID you would like to view the roster for: ")
-        cur.execute("SELECT SCHEDULE.STUDENT_ID FROM SCHEDULE WHERE COURSE_ID = '{}'".format(crn.upper()))
-        course_roster = cur.fetchall()
-        print(course_roster)
+        try:
+            cur.execute("SELECT SCHEDULE.STUDENT_ID FROM SCHEDULE WHERE COURSE_ID = '{}'".format(crn.upper()))
+            course_roster = cur.fetchall()
+            print(course_roster)
+        except:
+            print("No such course!")
