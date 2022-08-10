@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import datetime
 from User import User
 from database_functions import *
 

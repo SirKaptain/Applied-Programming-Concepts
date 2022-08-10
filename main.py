@@ -105,8 +105,9 @@ elif (type(user)==Admin):
 What would you like to do:
 1) Add Course to System     2) Remove Course from System
 3) Add User                 4) Remove User
-5) Add Student to Course    5) Remove Student from Course
-7) Print Roster             8) Search Course 
+5) Add Student to Course    6) Remove Student from Course
+7) Add Instructor to Course 8) Remove Instructor from C0urse
+9) Print Roster             10) Search Course
 0) Exit       
 """
         )
@@ -124,8 +125,12 @@ What would you like to do:
         elif (choice == '6'):
             user.remove_student_from_course()
         elif (choice == '7'):
-            user.print_roster()
+            user.add_instructor_to_course()
         elif (choice == '8'):
+            user.remove_instructor_from_course()
+        elif (choice == '9'):
+            user.print_roster()
+        elif (choice == '10'):
             user.search_course()
         elif (choice == '0'):
             print("Exiting")

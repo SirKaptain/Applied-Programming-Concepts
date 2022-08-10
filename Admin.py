@@ -185,6 +185,7 @@ class Admin(User):
         course_crn = input("Enter the Course CRN: ")
         cur.execute("SELECT * FROM COURSES WHERE COURSES.CRN = '{}'".format(course_crn))
         course_info = cur.fetchall()
+
         if (student_info and course_info): #if found a course with correct crn and student with correct ID
             cur.execute("INSERT INTO SCHEDULE('STUDENT_ID', 'COURSE_ID') VALUES ('{}', '{}')".format(student_id, course_crn))
             conn.commit()
@@ -201,6 +202,32 @@ class Admin(User):
             cur.execute("SELECT COURSES.TITLE FROM COURSES WHERE COURSES.CRN = '{}'".format(course_crn)) #get couse title for nice printing
             print("Removed: " + (cur.fetchall())[0][0] + " from schedule!")
             cur.execute("DELETE FROM SCHEDULE WHERE STUDENT_ID = '{}' AND COURSE_ID = '{}'".format(student_id, course_crn))
+            conn.commit()
+        else:
+            print("No such course in schedule!")
+        
+    def add_instructor_to_course(self, conn):
+        cur = conn.cursor()
+        instructor_id = input("Enter an Instructor ID: ")
+        cur.execute("SELECT INSTRUCTOR.ID FROM INSTRUCTOR WHERE ID = '{}'".format(instructor_id.upper()))
+        instructor_info = cur.fetchall()
+        course_crn = input("Enter a Course CRN: ")
+        cur.execute("SELECT COURSES.CRN FROM COURSES WHERE CRN = '{}'".format(course_crn.upper()))
+        course_info = cur.fetchall()
+
+        if(instructor_info and course_info):    #If found valid instructor ID and course CRN
+            cur.execute("UPDATE COURSES SET INSTRUCTOR_ID = '{}' WHERE COURSES.CRN = '{}'".format(instructor_info, course_info))
+            conn.commit()
+        else:
+            print("Invalid Instructor ID or Course CRN")
+
+    def remove_instructor_from_course(self, conn):
+        cur = conn.cursor()
+        instructor_id = input("Enter an Instructor ID: ")
+        course_crn = input("Enter a Course CRN: ")
+        cur.execute("SELECT * FROM COURSES WHERE INSTRUCTOR_ID = '{}' AND COURSES.CRN = '{}'".format(instructor_id.upper(), course_crn))
+        if (cur.fetchall()):
+            cur.execute("UPDATE COURSES SET INSTRUCTOR_ID = NULL WHERE INSTRUCTOR_ID = '{}' AND CRN = '{}'".format(instructor_id, course_crn))
             conn.commit()
         else:
             print("No such course in schedule!")
