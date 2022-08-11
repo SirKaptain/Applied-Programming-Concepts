@@ -52,7 +52,7 @@ if (type(user)==Student):
 What would you like to do:
 1) Search Courses               2) Add Course to Schedule
 3) Remove Course from Schedule  4) Print Schedule
-5) Check For Conflicts          0) Exit 
+0) Exit 
 """)
         choice = input("Input: ")
 
@@ -66,8 +66,6 @@ What would you like to do:
             user.drop_course(conn, course_id)
         elif (choice == '4'):
             user.print_schedule(conn)
-        elif (choice == '5'):
-            print("WIP")
         elif choice == '0':
             print("Exiting")
             break
@@ -113,25 +111,25 @@ What would you like to do:
         )
         choice = input("Input: ")
         if (choice == '1'):
-            user.add_course()
+            user.add_course(conn)
         elif (choice == '2'):
-            user.remove_course()
+            user.remove_course(conn)
         elif (choice == '3'):
-            user.add_user()
+            user.add_user(conn)
         elif (choice == '4'):
-            user.remove_user()
+            user.remove_user(conn)
         elif (choice == '5'):
-            user.add_student_to_course()
+            user.add_student_to_course(conn)
         elif (choice == '6'):
-            user.remove_student_from_course()
+            user.remove_student_from_course(conn)
         elif (choice == '7'):
-            user.add_instructor_to_course()
+            user.add_instructor_to_course(conn)
         elif (choice == '8'):
-            user.remove_instructor_from_course()
+            user.remove_instructor_from_course(conn)
         elif (choice == '9'):
-            user.print_roster()
+            user.print_roster(conn)
         elif (choice == '10'):
-            user.search_course()
+            user.search_course(conn)
         elif (choice == '0'):
             print("Exiting")
             break
