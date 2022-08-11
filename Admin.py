@@ -128,20 +128,22 @@ class Admin(User):
         cur = conn.cursor()
         cur.execute("SELECT COURSES.CRN FROM COURSES")
         fetch = cur.fetchall()
-        crn_list = [int(item) for t in fetch for item in t]
+        crn_list = [item for t in fetch for item in t]
 
         crn = 1
         while (crn != '0'):
             crn = input("What course crn would you like to remove? (Enter 0 to exit): ")
-            if (crn in crn_list):
+            if (crn in str(crn_list)):
                 cur.execute("DELETE FROM COURSES WHERE CRN = '{}'".format(crn))
                 conn.commit()
+                break
             elif(crn == '0'):
                 break
             else:
                 print("Invalid CRN")
 
     def add_user(self, conn):
+        response = 1
         while (response != 0):
             print("Would you like to add 1) Student 2) Instructor 3) Admin 0) Exit")
             response = input("Input: ")
@@ -156,30 +158,37 @@ class Admin(User):
             else:
                 print("Invalid Response!")
                 continue
+
+            table_attributes = []
+            for i in get_table_info(conn, table):
+                table_attributes.append(i[1])    
+
             answer = []
-            for i in get_attributes(conn, table):
+            for i in table_attributes:
                 answer.append(input(i + "?: "))
-            insert_row(conn, table, get_attributes(conn, table), tuple(answer))
+            insert_row(conn, table, tuple(table_attributes), tuple(answer))
             conn.commit()
+            break
 
     def remove_user(self, conn):
         cur = conn.cursor()
-        id = input("Please enter ID number to remove: ")
+        id = (input("Please enter ID number to remove: ")).upper()
 
         tables = get_table_names(conn)
         for table in [tables[0], tables[2], tables[5]]: #searching only student, instructor, and admin table
             cur.execute("SELECT * FROM {} WHERE ID = '{}'".format(table, id.upper(), id.lower()))
             user_info = cur.fetchall()
-        
+            if (user_info):
+                break
         if (user_info):
-            remove_row(conn, table, "ID", id)
+            remove_row(conn, table, "ID", id.upper())
+            conn.commit()
         else:
             print("No User Found!")
-        conn.commit()
 
     def add_student_to_course(self, conn):
         cur = conn.cursor()
-        student_id = input("Enter the Student ID: ")
+        student_id = (input("Enter the Student ID: ")).upper()
         cur.execute("SELECT * FROM STUDENT WHERE STUDENT.ID = '{}'".format(student_id))
         student_info = cur.fetchall()
         course_crn = input("Enter the Course CRN: ")
@@ -190,25 +199,28 @@ class Admin(User):
             cur.execute("INSERT INTO SCHEDULE('STUDENT_ID', 'COURSE_ID') VALUES ('{}', '{}')".format(student_id, course_crn))
             conn.commit()
             cur.execute("SELECT COURSES.TITLE FROM COURSES WHERE COURSES.CRN = '{}'".format(course_crn))
-            print("Added: " + (cur.fetchall())[0][0] + " to schedule!")
+            print("Added student to " + (cur.fetchall())[0][0])
         else:
             print("Invalid student ID or course CRN")
 
-    def remove_student_from_course(self, conn, student_id, course_crn):
+    def remove_student_from_course(self, conn):
         cur = conn.cursor()
+        student_id = (input("Enter the Student ID: ")).upper()
+        course_crn = input("Enter the Course CRN: ")
+
         #check if user has course in their schedule
         cur.execute("SELECT * FROM SCHEDULE WHERE STUDENT_ID = '{}' AND COURSE_ID = '{}'".format(student_id, course_crn))
         if (cur.fetchall()):
             cur.execute("SELECT COURSES.TITLE FROM COURSES WHERE COURSES.CRN = '{}'".format(course_crn)) #get couse title for nice printing
-            print("Removed: " + (cur.fetchall())[0][0] + " from schedule!")
+            print("Removed student from " + (cur.fetchall())[0][0])
             cur.execute("DELETE FROM SCHEDULE WHERE STUDENT_ID = '{}' AND COURSE_ID = '{}'".format(student_id, course_crn))
             conn.commit()
         else:
-            print("No such course in schedule!")
+            print("Invalid student ID or course CRN")
         
     def add_instructor_to_course(self, conn):
         cur = conn.cursor()
-        instructor_id = input("Enter an Instructor ID: ")
+        instructor_id = (input("Enter an Instructor ID: ")).upper()
         cur.execute("SELECT INSTRUCTOR.ID FROM INSTRUCTOR WHERE ID = '{}'".format(instructor_id.upper()))
         instructor_info = cur.fetchall()
         course_crn = input("Enter a Course CRN: ")
@@ -216,28 +228,28 @@ class Admin(User):
         course_info = cur.fetchall()
 
         if(instructor_info and course_info):    #If found valid instructor ID and course CRN
-            cur.execute("UPDATE COURSES SET INSTRUCTOR_ID = '{}' WHERE COURSES.CRN = '{}'".format(instructor_info, course_info))
+            cur.execute("UPDATE COURSES SET INSTRUCTOR_ID = '{}' WHERE COURSES.CRN = '{}'".format(instructor_info[0][0], course_info[0][0]))
             conn.commit()
         else:
             print("Invalid Instructor ID or Course CRN")
 
     def remove_instructor_from_course(self, conn):
         cur = conn.cursor()
-        instructor_id = input("Enter an Instructor ID: ")
+        instructor_id = (input("Enter an Instructor ID: ")).upper()
         course_crn = input("Enter a Course CRN: ")
         cur.execute("SELECT * FROM COURSES WHERE INSTRUCTOR_ID = '{}' AND COURSES.CRN = '{}'".format(instructor_id.upper(), course_crn))
         if (cur.fetchall()):
             cur.execute("UPDATE COURSES SET INSTRUCTOR_ID = NULL WHERE INSTRUCTOR_ID = '{}' AND CRN = '{}'".format(instructor_id, course_crn))
             conn.commit()
         else:
-            print("No such course in schedule!")
+            print("Invalid Instructor ID or Course CRN")
 
     def print_roster(self, conn):
         cur = conn.cursor()
         crn = input("Please enter the course ID you would like to view the roster for: ")
-        try:
-            cur.execute("SELECT SCHEDULE.STUDENT_ID FROM SCHEDULE WHERE COURSE_ID = '{}'".format(crn.upper()))
-            course_roster = cur.fetchall()
-            print(course_roster)
-        except:
-            print("No such course!")
+        cur.execute("SELECT SCHEDULE.STUDENT_ID FROM SCHEDULE WHERE COURSE_ID = '{}'".format(crn.upper()))
+        course_roster = cur.fetchall()
+        for i in course_roster:
+            cur.execute("SELECT STUDENT.NAME, STUDENT.SURNAME FROM STUDENT WHERE STUDENT.ID = '{}'".format(i[0]))
+            student_name = (cur.fetchall())
+            print(''.join(student_name[0][0] + ' '+ student_name[0][1]))

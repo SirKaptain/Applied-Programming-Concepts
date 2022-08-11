@@ -55,12 +55,18 @@ class Student(User):
 
     def print_schedule(self, conn):
         cur = conn.cursor()
-        cur.execute("SELECT * FROM COURSES, SCHEDULE, STUDENT, INSTRUCTOR WHERE STUDENT.ID = SCHEDULE.STUDENT_ID AND COURSES.CRN = SCHEDULE.COURSE_ID AND INSTRUCTOR.ID = COURSES.INSTRUCTOR_ID AND STUDENT.ID = '{}'".format(self.id))
+        cur.execute("SELECT * FROM COURSES, SCHEDULE, STUDENT WHERE STUDENT.ID = SCHEDULE.STUDENT_ID AND COURSES.CRN = SCHEDULE.COURSE_ID AND STUDENT.ID = '{}'".format(self.id))
         courses = cur.fetchall()
         if (len(courses) == 0):
             print("No Courses in Schedule!")
         else:
             for i in courses:
+                cur.execute("SELECT INSTRUCTOR.NAME, INSTRUCTOR.SURNAME FROM INSTRUCTOR WHERE INSTRUCTOR.ID = '{}'".format(i[9]))
+                prof_name = (cur.fetchall())
+                if (len(prof_name) == 0):
+                    prof_name = "None"
+                else:
+                    prof_name = ''.join(prof_name[0][0] + ' ' + prof_name[0][1])
                 print("\n")
                 print("CRN:", i[0])
                 print("TITLE:", i[1])
@@ -71,5 +77,5 @@ class Student(User):
                 print("SEMESTER:", i[6])
                 print("YEAR:", i[7])
                 print("CREDITS:", i[8])
-                print("INSTRUCTOR:", i[19] + ' ' + i[20])
+                print("INSTRUCTOR:", prof_name)
                 print("\n")

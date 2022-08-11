@@ -66,7 +66,8 @@ def insert_row(conn, table, attributes, values):
 def remove_row(conn, table, attribute, value):
     cur = conn.cursor()
     try:
-        cur.execute("DELETE FROM '{}' WHERE '{}' = '{}'".format(table, attribute, value))
+        print("DELETE FROM {} WHERE {} = '{}'".format(table, attribute, value))
+        cur.execute("DELETE FROM {} WHERE {} = '{}'".format(table, attribute, value))
     except Error as e:
         print(e)
 

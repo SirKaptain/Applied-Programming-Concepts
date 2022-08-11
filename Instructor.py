@@ -22,7 +22,6 @@ class Instructor(User):
         cur = conn.cursor()
         cur.execute("SELECT * FROM COURSES WHERE COURSES.INSTRUCTOR_ID = '{}'".format(self.id))
         courses = cur.fetchall()
-        print(courses)
         if (len(courses) == 0):
             print("No Courses in Schedule!")
         else:
@@ -44,4 +43,7 @@ class Instructor(User):
         crn = input("Please enter the course ID you would like to view the roster for: ")
         cur.execute("SELECT SCHEDULE.STUDENT_ID FROM SCHEDULE WHERE COURSE_ID = '{}'".format(crn.upper()))
         course_roster = cur.fetchall()
-        print(course_roster)
+        for i in course_roster:
+            cur.execute("SELECT STUDENT.NAME, STUDENT.SURNAME FROM STUDENT WHERE STUDENT.ID = '{}'".format(i[0]))
+            student_name = (cur.fetchall())
+            print(''.join(student_name[0][0] + ' '+ student_name[0][1]))
